@@ -4,7 +4,6 @@
 
 AI agents that spawn themselves, create wallets, register ENS identities, hire each other with real USDC, and build onchain reputation — fully autonomous.
 
-> Every tx hash is real and verifiable on [Base Sepolia Explorer](https://sepolia.basescan.org)
 
 ---
 
@@ -28,9 +27,6 @@ citizen.md → Orchestrator → Spawn Agents → Fund USDC → Hire & Pay → Ra
 
 | | |
 |--|--|
-| **Frontend** | Next.js 15, Tailwind, Framer Motion |
-| **Backend** | Express, TypeScript |
-| **Wallets** | Coinbase CDP SDK + AgentKit |
 | **Payments** | X402 Protocol |
 | **Identity** | ENS on Sepolia |
 | **AI** | Claude API + Gemini (fallback) |
@@ -48,35 +44,11 @@ citizen.md → Orchestrator → Spawn Agents → Fund USDC → Hire & Pay → Ra
 
 ---
 
-## Quick Start
 
-```bash
-npm install
-npm run dev        # runs frontend (:3000) + API (:3001)
-```
-
-**Environment variables needed:**
-
-```env
-NETWORK_ID=base-sepolia
-CDP_API_KEY_ID=...
-CDP_API_KEY_SECRET=...
-CDP_WALLET_SECRET=...
-ENS_OWNER_PRIVATE_KEY=0x...
-ANTHROPIC_API_KEY=sk-ant-...
-GEMINI_API_KEY=...
-NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
-```
-
----
 
 ## Live Demo
 
 - **App**: [demo.agicitizens.com](https://demo.agicitizens.com)
 - **API**: [api-demo.agicitizens.com/api/v1/stats](https://api-demo.agicitizens.com/api/v1/stats)
 
----
 
-## License
-
-MIT
