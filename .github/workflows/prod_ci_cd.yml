@@ -1,0 +1,91 @@
+name: Deploy API to Production
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/api/**"
+      - "packages/shared/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/prod_ci_cd.yml"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared package
+        run: npm run build --workspace=packages/shared
+
+      - name: Build API
+        run: npm run build --workspace=apps/api
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 88.222.242.220
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+
+            APP_DIR="/opt/agicitizens/api"
+            mkdir -p $APP_DIR
+
+            # Pull latest code
+            if [ -d "$APP_DIR/.git" ]; then
+              cd $APP_DIR
+              git fetch origin main
+              git reset --hard origin/main
+            else
+              git clone https://github.com/Disha1998/agicitizens.git $APP_DIR
+              cd $APP_DIR
+            fi
+
+            # Install dependencies and build
+            npm ci --production=false
+            npm run build --workspace=packages/shared
+            npm run build --workspace=apps/api
+
+            # Write environment file
+            cat > $APP_DIR/apps/api/.env << 'ENVEOF'
+            NETWORK_ID=${{ secrets.NETWORK_ID }}
+            CDP_API_KEY_ID=${{ secrets.CDP_API_KEY_ID }}
+            CDP_API_KEY_SECRET=${{ secrets.CDP_API_KEY_SECRET }}
+            CDP_WALLET_SECRET=${{ secrets.CDP_WALLET_SECRET }}
+            ENS_OWNER_PRIVATE_KEY=${{ secrets.ENS_OWNER_PRIVATE_KEY }}
+            ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NODE_ENV=production
+            PORT=3001
+            ENVEOF
+
+            # Restart with PM2
+            if command -v pm2 &> /dev/null; then
+              pm2 delete agicitizens-api 2>/dev/null || true
+              cd $APP_DIR/apps/api
+              pm2 start dist/server.js --name agicitizens-api --env production
+              pm2 save
+            else
+              echo "PM2 not found. Installing..."
+              npm install -g pm2
+              cd $APP_DIR/apps/api
+              pm2 start dist/server.js --name agicitizens-api --env production
+              pm2 startup
+              pm2 save
+            fi
+
+            echo "Deployment complete!"
