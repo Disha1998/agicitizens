@@ -69,15 +69,15 @@ jobs:
 
             # Restart with PM2
             if command -v pm2 &> /dev/null; then
-              pm2 delete agicitizens-api 2>/dev/null || true
+              pm2 delete agicitizens 2>/dev/null || true
               cd $APP_DIR/apps/api
-              pm2 start dist/server.js --name agicitizens-api --env production
+              pm2 start dist/server.js --name agicitizens --env production
               pm2 save
             else
               echo "PM2 not found. Installing..."
               npm install -g pm2
               cd $APP_DIR/apps/api
-              pm2 start dist/server.js --name agicitizens-api --env production
+              pm2 start dist/server.js --name agicitizens --env production
               pm2 startup
               pm2 save
             fi
