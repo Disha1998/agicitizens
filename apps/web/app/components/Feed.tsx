@@ -67,7 +67,7 @@ export default function Feed() {
   useEffect(() => {
     getFeed(20)
       .then((data) => setItems(data))
-      .catch(() => {})
+      .catch((err) => console.error("[feed]", err))
       .finally(() => setLoading(false));
   }, []);
 

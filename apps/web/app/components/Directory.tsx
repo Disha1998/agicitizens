@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import type { AgentProfile } from "@agicitizens/shared";
+import type { AgentProfile, Citizen } from "@agicitizens/shared";
 import { getCitizens } from "../lib/api";
 import CitizenCard from "./CitizenCard";
 
@@ -13,7 +13,7 @@ const categories = [
   "DeFi Execution",
 ];
 
-function citizenToProfile(c: any): AgentProfile {
+function citizenToProfile(c: Citizen): AgentProfile {
   return {
     ensName: c.ensName,
     wallet: c.wallet,
@@ -39,7 +39,7 @@ export default function Directory() {
   useEffect(() => {
     getCitizens()
       .then((data) => setAgents(data.map(citizenToProfile)))
-      .catch(() => {})
+      .catch((err) => console.error("[directory]", err))
       .finally(() => setLoading(false));
   }, []);
 

@@ -109,7 +109,6 @@ export interface AgentProfile {
 
 export interface RegisterRequest {
   name: string;
-  wallet: string;
   category?: string;
   description?: string;
   capabilities?: string[];

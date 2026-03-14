@@ -34,13 +34,13 @@ export default function Ticker() {
   useEffect(() => {
     getStats()
       .then((stats) => setItems(formatTickerItems(stats)))
-      .catch(() => {});
+      .catch((err) => console.error("[ticker]", err));
 
     // Refresh every 30 seconds
     const interval = setInterval(() => {
       getStats()
         .then((stats) => setItems(formatTickerItems(stats)))
-        .catch(() => {});
+        .catch((err) => console.error("[ticker]", err));
     }, 30_000);
 
     return () => clearInterval(interval);

@@ -8,14 +8,23 @@ import {
   addFeedEntry,
   authByCitizenKey,
 } from "../services/store.js";
-import { sendX402Payment } from "../services/x402.js";
 
 const router = Router();
 
 /**
  * POST /api/v1/hire
- * Hire an agent: creates a task and triggers X402 payment flow.
- * Requires x-api-key header.
+ * Hire an agent to perform a task.
+ *
+ * X402 flow (server is a notary, not a bank):
+ * 1. Caller POSTs { service_id, to_ens }
+ * 2. hirePaymentMiddleware returns 402 with target wallet + service price
+ * 3. Caller's wrapFetchWithPayment pays target agent DIRECTLY
+ * 4. Caller retries with X-PAYMENT proof header
+ * 5. Middleware verifies payment via facilitator
+ * 6. This handler runs — creates task record, updates balances
+ *
+ * Money flows: caller wallet → target wallet (peer-to-peer)
+ * Server never holds or moves funds.
  */
 router.post("/hire", async (req, res) => {
   try {
@@ -43,10 +52,14 @@ router.post("/hire", async (req, res) => {
       return;
     }
 
-    const amount = body.amount_usdc ?? service.priceUsdc;
+    // Payment was already verified by hirePaymentMiddleware before we get here.
+    // Extract verified payment info attached by the middleware.
+    const x402 = (req as any).x402Payment as
+      | { verified: boolean; txHash: string | null; amount: number }
+      | undefined;
 
-    // Execute X402 USDC payment to the target agent's wallet
-    const payment = await sendX402Payment(target.wallet, amount);
+    const amount = x402?.amount ?? body.amount_usdc ?? service.priceUsdc;
+    const paymentVerified = x402?.verified === true;
 
     const task: Task = {
       id: nextTaskId(),
@@ -54,8 +67,8 @@ router.post("/hire", async (req, res) => {
       fromEns: caller.ensName,
       toEns: body.to_ens,
       amountUsdc: amount,
-      txHash: payment.txHash,
-      status: payment.success ? "paid" : "pending",
+      txHash: x402?.txHash ?? null,
+      status: paymentVerified ? "paid" : "pending",
       rating: null,
       review: null,
       createdAt: new Date().toISOString(),
@@ -64,8 +77,8 @@ router.post("/hire", async (req, res) => {
 
     tasks.set(task.id, task);
 
-    // Update caller spend and target earnings
-    if (payment.success) {
+    // Update balances (payment already happened peer-to-peer)
+    if (paymentVerified) {
       caller.totalSpent += amount;
       target.totalEarned += amount;
       target.tasksCompleted += 1;
@@ -74,14 +87,13 @@ router.post("/hire", async (req, res) => {
     addFeedEntry(
       caller.ensName,
       "hire",
-      `Hired ${body.to_ens} for "${service.title}" — ${amount} USDC${payment.success ? "" : " (payment pending)"}`,
-      payment.txHash,
+      `Hired ${body.to_ens} for "${service.title}" — ${amount} USDC${paymentVerified ? "" : " (awaiting payment)"}`,
+      x402?.txHash ?? null,
     );
 
     res.status(201).json({
       ...task,
-      paymentStatus: payment.success ? "confirmed" : "failed",
-      paymentError: payment.error || null,
+      paymentVerified,
     });
   } catch (err: any) {
     console.error("[hire]", err);

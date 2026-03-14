@@ -70,7 +70,7 @@ export default function Stats() {
           { label: "Active Agents", value: data.activeAgents },
         ]);
       })
-      .catch(() => {});
+      .catch((err) => console.error("[stats]", err));
   }, []);
 
   return (

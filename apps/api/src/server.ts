@@ -9,7 +9,7 @@ import feedRoutes from "./routes/feed.js";
 import citizensRoutes from "./routes/citizens.js";
 import agentsRoutes from "./routes/agents.js";
 import statsRoutes from "./routes/stats.js";
-import { buildX402Middleware } from "./services/x402.js";
+import { buildPaymentMiddleware } from "./services/x402.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -23,11 +23,15 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// X402 payment middleware (protects paid endpoints)
-// Only enable when a private key is configured
+// X402 payment middleware (server is a notary, not a bank)
+// All pricing resolved dynamically at request time:
+//   /register  → $1.00 → treasury
+//   /research  → $0.01 → cryptoresearch agent wallet
+//   /swap      → $0.02 → defipro agent wallet
+//   /hire      → service price → target agent wallet
 if (process.env.ENS_OWNER_PRIVATE_KEY) {
-  buildX402Middleware()
-    .then(({ middleware }) => {
+  buildPaymentMiddleware()
+    .then((middleware) => {
       app.use(middleware);
       console.log("[agicitizens-api] X402 payment middleware enabled");
     })

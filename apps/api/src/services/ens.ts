@@ -27,8 +27,13 @@ import { getNetwork } from "@agicitizens/shared";
  */
 
 const network = getNetwork();
+
+// addEnsContracts augments the viem chain with ENS contract addresses.
+// We use `as any` to bridge viem version mismatches between ensjs and our local viem.
 const chain =
-  network.id === "base" ? addEnsContracts(base) : addEnsContracts(baseSepolia);
+  network.id === "base"
+    ? addEnsContracts(base as any)
+    : addEnsContracts(baseSepolia as any);
 
 function getWalletClient() {
   const privateKey = process.env.ENS_OWNER_PRIVATE_KEY as Hex | undefined;
@@ -39,12 +44,12 @@ function getWalletClient() {
   const account = privateKeyToAccount(privateKey);
   const transport = http(network.rpcUrl);
 
-  return createWalletClient({ account, chain, transport });
+  return createWalletClient({ account, chain: chain as any, transport });
 }
 
 function getPublicClient() {
   const transport = http(network.rpcUrl);
-  return createPublicClient({ chain, transport });
+  return createPublicClient({ chain: chain as any, transport });
 }
 
 /**
@@ -65,11 +70,11 @@ export async function registerSubdomain(
   try {
     const wallet = getWalletClient();
 
-    const hash = await createSubname(wallet, {
+    const hash = await createSubname(wallet as any, {
       name: ensName,
       owner: ownerAddress as Address,
       contract: "registry",
-    });
+    } as any);
 
     console.log(`[ens] registered ${ensName} → ${ownerAddress} (tx: ${hash})`);
     return { ensName, txHash: hash };
@@ -104,11 +109,12 @@ export async function setTextRecords(
     let lastTxHash = "";
 
     for (const [key, value] of Object.entries(records)) {
-      const hash = await setTextRecord(wallet, {
+      const hash = await setTextRecord(wallet as any, {
         name: ensName,
         key,
         value,
         resolverAddress,
+        account: wallet.account as any,
       });
 
       lastTxHash = hash;
@@ -131,7 +137,7 @@ export async function getTextRecord(
 ): Promise<string | null> {
   try {
     const client = getPublicClient();
-    const result = await ensGetTextRecord(client, { name: ensName, key });
+    const result = await ensGetTextRecord(client as any, { name: ensName, key });
     return result ?? null;
   } catch {
     return null;

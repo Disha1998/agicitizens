@@ -959,7 +959,7 @@ function Ticker() {
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getStats"])().then({
                 "Ticker.useEffect": (stats)=>setItems(formatTickerItems(stats))
             }["Ticker.useEffect"]).catch({
-                "Ticker.useEffect": ()=>{}
+                "Ticker.useEffect": (err)=>console.error("[ticker]", err)
             }["Ticker.useEffect"]);
             // Refresh every 30 seconds
             const interval = setInterval({
@@ -967,7 +967,7 @@ function Ticker() {
                     (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getStats"])().then({
                         "Ticker.useEffect.interval": (stats)=>setItems(formatTickerItems(stats))
                     }["Ticker.useEffect.interval"]).catch({
-                        "Ticker.useEffect.interval": ()=>{}
+                        "Ticker.useEffect.interval": (err)=>console.error("[ticker]", err)
                     }["Ticker.useEffect.interval"]);
                 }
             }["Ticker.useEffect.interval"], 30_000);
@@ -1161,7 +1161,7 @@ function Stats() {
                     ]);
                 }
             }["Stats.useEffect"]).catch({
-                "Stats.useEffect": ()=>{}
+                "Stats.useEffect": (err)=>console.error("[stats]", err)
             }["Stats.useEffect"]);
         }
     }["Stats.useEffect"], []);
@@ -1898,7 +1898,7 @@ function Feed() {
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getFeed"])(20).then({
                 "Feed.useEffect": (data)=>setItems(data)
             }["Feed.useEffect"]).catch({
-                "Feed.useEffect": ()=>{}
+                "Feed.useEffect": (err)=>console.error("[feed]", err)
             }["Feed.useEffect"]).finally({
                 "Feed.useEffect": ()=>setLoading(false)
             }["Feed.useEffect"]);
@@ -2559,7 +2559,7 @@ function Directory() {
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getCitizens"])().then({
                 "Directory.useEffect": (data)=>setAgents(data.map(citizenToProfile))
             }["Directory.useEffect"]).catch({
-                "Directory.useEffect": ()=>{}
+                "Directory.useEffect": (err)=>console.error("[directory]", err)
             }["Directory.useEffect"]).finally({
                 "Directory.useEffect": ()=>setLoading(false)
             }["Directory.useEffect"]);

@@ -16,7 +16,7 @@ export interface OrchestrationResult {
   children: RegisterResponse[];
 }
 
-const PARENT_ENS = "agicitizens.eth";
+const PARENT_NAME = "agicitizens-core";
 
 export async function executeCitizenMd(
   markdown: string,
@@ -25,8 +25,7 @@ export async function executeCitizenMd(
 
   // 1. Ensure parent orchestrator (agicitizens.eth) is registered
   const parent = await registerCitizen({
-    name: "agicitizens",
-    wallet: "",
+    name: PARENT_NAME,
     category: "Orchestrator",
     description: "AGICitizens main orchestrator — spawns and manages all child agents",
     capabilities: ["Agent spawning", "Wallet generation", "Task delegation", "Fund distribution"],
@@ -35,7 +34,7 @@ export async function executeCitizenMd(
     spawned_by: null,
   });
 
-  addFeedEntry(PARENT_ENS, "citizen-md", "Parsed citizen.md, spawning children...");
+  addFeedEntry(parent.ens_name, "citizen-md", "Parsed citizen.md, spawning children...");
 
   // 2. Spawn children
   const children: RegisterResponse[] = [];
@@ -60,7 +59,6 @@ async function spawnChild(
 ): Promise<RegisterResponse> {
   const child = await registerCitizen({
     name: template.name,
-    wallet: "",
     category: template.category,
     description: template.description,
     capabilities: template.capabilities,

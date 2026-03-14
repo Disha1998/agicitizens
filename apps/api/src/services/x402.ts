@@ -1,23 +1,31 @@
 /**
  * X402 payment integration using the official @x402 SDK.
  *
- * Seller side: paymentMiddleware protects paid API endpoints.
- * Buyer side: x402Fetch wraps fetch to auto-pay for X402-protected APIs.
+ * The server is a NOTARY, not a bank:
+ * - Middleware returns 402 with price + payTo address
+ * - Caller pays directly from their wallet → target wallet
+ * - Middleware verifies proof of payment via facilitator
+ * - Server never touches anyone's money
+ *
+ * All paid routes use dynamic pricing/payTo:
+ *   /register  → $1.00 → treasury wallet (platform)
+ *   /research  → $0.01 → cryptoresearch agent's wallet
+ *   /swap      → $0.02 → defipro agent's wallet
+ *   /hire      → service price → target agent's wallet
+ *
+ * Agent wallets are looked up from the store at request time,
+ * not at middleware setup time (they don't exist yet at startup).
  *
  * Docs: https://docs.x402.org/getting-started/quickstart-for-sellers
  */
 
+import type { Request, Response, NextFunction } from "express";
 import { createPublicClient, http } from "viem";
 import { baseSepolia, base } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
+import { services, citizens } from "./store.js";
 
-export interface PaymentResult {
-  success: boolean;
-  txHash: string | null;
-  error?: string;
-}
-
-// Base Sepolia CAIP-2 network identifier
+// CAIP-2 network identifiers
 const BASE_SEPOLIA_CAIP2 = "eip155:84532";
 const BASE_MAINNET_CAIP2 = "eip155:8453";
 
@@ -34,13 +42,12 @@ function getChain() {
 }
 
 /**
- * Get the wallet address that receives X402 payments (seller).
+ * Get the treasury (platform) wallet address.
  */
-export function getPayToAddress(): string {
+function getTreasuryAddress(): string {
   if (process.env.X402_PAY_TO_ADDRESS) {
     return process.env.X402_PAY_TO_ADDRESS;
   }
-  // Derive from ENS owner key if available
   if (process.env.ENS_OWNER_PRIVATE_KEY) {
     const account = privateKeyToAccount(
       process.env.ENS_OWNER_PRIVATE_KEY as `0x${string}`,
@@ -51,17 +58,99 @@ export function getPayToAddress(): string {
 }
 
 /**
- * Build the X402 payment middleware + resource server for Express.
- * Protects specified routes with per-call micropayments.
- *
- * Usage in server.ts:
- *   const { middleware } = await buildX402Middleware();
- *   app.use(middleware);
+ * Find an agent's wallet by matching their ENS name prefix.
+ * e.g. "cryptoresearch" matches "cryptoresearch.agicitizens.eth"
  */
-export async function buildX402Middleware() {
-  const { paymentMiddleware, x402ResourceServer } = await import(
-    "@x402/express"
-  );
+function findAgentWallet(namePrefix: string): string | null {
+  for (const [ensName, citizen] of citizens) {
+    if (ensName.startsWith(namePrefix + ".")) {
+      return citizen.wallet;
+    }
+  }
+  return null;
+}
+
+/**
+ * Route pricing config — resolved at request time.
+ * Returns { price, payTo, description } or null if route is not paid.
+ */
+function resolveRoutePricing(
+  req: Request,
+): { price: string; payTo: string; description: string } | null {
+  const method = req.method;
+  const path = req.path;
+
+  // POST /api/v1/register → $1.00 → treasury
+  if (method === "POST" && path.endsWith("/register")) {
+    return {
+      price: "$1.00",
+      payTo: getTreasuryAddress(),
+      description: "Register a new citizen on AGICitizens",
+    };
+  }
+
+  // POST /api/v1/agents/research → $0.01 → cryptoresearch agent
+  if (method === "POST" && path.endsWith("/agents/research")) {
+    const agentWallet = findAgentWallet("cryptoresearch");
+    if (!agentWallet) return null; // agent not registered yet, let it through
+    return {
+      price: "$0.01",
+      payTo: agentWallet,
+      description: "AI-powered crypto research via Claude",
+    };
+  }
+
+  // POST /api/v1/agents/swap → $0.02 → defipro agent
+  if (method === "POST" && path.endsWith("/agents/swap")) {
+    const agentWallet = findAgentWallet("defipro");
+    if (!agentWallet) return null; // agent not registered yet, let it through
+    return {
+      price: "$0.02",
+      payTo: agentWallet,
+      description: "Execute DeFi swap via HeyElsa X402",
+    };
+  }
+
+  // POST /api/v1/hire → dynamic price → target agent's wallet
+  if (method === "POST" && path.endsWith("/hire")) {
+    const { service_id, to_ens } = req.body || {};
+    if (!service_id || !to_ens) return null; // let handler return 400
+
+    const service = services.get(service_id);
+    if (!service) return null; // let handler return 404
+
+    const target = citizens.get(to_ens);
+    if (!target) return null; // let handler return 404
+
+    const priceUsdc = req.body.amount_usdc ?? service.priceUsdc;
+    return {
+      price: `$${priceUsdc}`,
+      payTo: target.wallet,
+      description: `Hire ${to_ens} for "${service.title}"`,
+    };
+  }
+
+  return null; // not a paid route
+}
+
+/**
+ * Build the unified X402 payment middleware.
+ *
+ * Handles ALL paid routes with dynamic pricing + payTo:
+ *
+ * Flow:
+ * 1. Caller POSTs to a paid endpoint
+ * 2. Middleware resolves price + payTo from store (at request time)
+ * 3. No X-PAYMENT header → returns 402 with price + payTo
+ * 4. Caller's wrapFetchWithPayment pays the target directly
+ * 5. Caller retries with X-PAYMENT proof header
+ * 6. Middleware verifies payment via facilitator
+ * 7. Route handler runs
+ *
+ * Server never touches anyone's money.
+ */
+export async function buildPaymentMiddleware() {
+  const { x402ResourceServer } = await import("@x402/express");
   const { ExactEvmScheme } = await import("@x402/evm/exact/server");
   const { HTTPFacilitatorClient } = await import("@x402/core/server");
 
@@ -70,59 +159,87 @@ export async function buildX402Middleware() {
   });
 
   const network = getNetwork();
-  const payTo = getPayToAddress();
-
-  // Define pricing for paid endpoints
-  const routePricing: Record<string, any> = {
-    "POST /api/v1/agents/research": {
-      accepts: [
-        {
-          scheme: "exact",
-          price: "$0.01",
-          network,
-          payTo,
-        },
-      ],
-      description: "AI-powered crypto research via Claude",
-      mimeType: "application/json",
-    },
-    "POST /api/v1/agents/swap": {
-      accepts: [
-        {
-          scheme: "exact",
-          price: "$0.02",
-          network,
-          payTo,
-        },
-      ],
-      description: "Execute DeFi swap via HeyElsa X402",
-      mimeType: "application/json",
-    },
-    "POST /api/v1/hire": {
-      accepts: [
-        {
-          scheme: "exact",
-          price: "$0.005",
-          network,
-          payTo,
-        },
-      ],
-      description: "Hire an agent to perform a task",
-      mimeType: "application/json",
-    },
-  };
 
   const resourceServer = new x402ResourceServer(facilitatorClient).register(
     network,
     new ExactEvmScheme(),
   );
 
-  const middleware = paymentMiddleware(routePricing, resourceServer);
-
   console.log(`[x402] Payment middleware configured on ${network}`);
-  console.log(`[x402] Pay-to address: ${payTo}`);
+  console.log(`[x402] Treasury: ${getTreasuryAddress()}`);
 
-  return { middleware };
+  return async function paymentMiddleware(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    // Resolve pricing for this route (dynamic, at request time)
+    const pricing = resolveRoutePricing(req);
+    if (!pricing) return next(); // not a paid route or missing data
+
+    const { price, payTo, description } = pricing;
+
+    // Check if caller already provided payment proof
+    const paymentHeader = req.headers["x-payment"] as string | undefined;
+
+    if (!paymentHeader) {
+      // No payment yet — return 402 with pricing
+      res.status(402).json({
+        error: "Payment Required",
+        accepts: [
+          { scheme: "exact", price, network, payTo },
+        ],
+        description,
+        mimeType: "application/json",
+      });
+      return;
+    }
+
+    // Payment header present — verify via facilitator
+    try {
+      const paymentRequirements = [
+        { scheme: "exact" as const, price, network, payTo },
+      ];
+
+      const verification = await resourceServer.verifyPayment(
+        paymentHeader,
+        paymentRequirements,
+      );
+
+      if (!verification.isValid) {
+        res.status(402).json({
+          error: "Payment verification failed",
+          reason: verification.reason,
+          accepts: paymentRequirements.map((r) => ({
+            ...r,
+            description,
+            mimeType: "application/json",
+          })),
+        });
+        return;
+      }
+
+      // Payment verified — attach proof for route handlers
+      (req as any).x402Payment = {
+        verified: true,
+        txHash: verification.txHash || null,
+        amount: parseFloat(price.replace("$", "")),
+        payTo,
+      };
+
+      // Settle the payment (tell facilitator to release funds)
+      resourceServer
+        .settlePayment(paymentHeader, paymentRequirements)
+        .catch((err: any) =>
+          console.error("[x402] settle failed:", err.message),
+        );
+
+      next();
+    } catch (err: any) {
+      console.error("[x402] verification error:", err.message);
+      res.status(500).json({ error: "Payment verification error" });
+    }
+  };
 }
 
 /**
@@ -147,64 +264,10 @@ export async function createX402Fetch(): Promise<typeof fetch> {
   );
   const publicClient = createPublicClient({ chain, transport: http() });
 
-  // Compose a full ClientEvmSigner from account + publicClient
   const signer = toClientEvmSigner(account, publicClient);
 
   const client = new x402Client();
   client.register("eip155:*", new ExactEvmScheme(signer));
 
   return wrapFetchWithPayment(fetch, client);
-}
-
-/**
- * Send a USDC payment to an address using AgentKit wallet.
- * Used for hire flow — direct wallet-to-wallet USDC transfer.
- */
-export async function sendX402Payment(
-  toAddress: string,
-  amountUsdc: number,
-): Promise<PaymentResult> {
-  if (!process.env.CDP_API_KEY_ID) {
-    console.warn("[x402] CDP keys not configured — cannot send payment");
-    return { success: false, txHash: null, error: "CDP keys not configured" };
-  }
-
-  try {
-    const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
-    const { encodeFunctionData, parseAbi } = await import("viem");
-
-    const wallet = await CdpEvmWalletProvider.configureWithWallet({
-      networkId: process.env.NETWORK_ID || "base-sepolia",
-      apiKeyId: process.env.CDP_API_KEY_ID,
-      apiKeySecret: process.env.CDP_API_KEY_SECRET,
-    });
-
-    // USDC addresses per network
-    const usdcAddress =
-      (process.env.NETWORK_ID || "base-sepolia") === "base"
-        ? "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-        : "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
-
-    const amountRaw = BigInt(Math.floor(amountUsdc * 1_000_000));
-
-    const data = encodeFunctionData({
-      abi: parseAbi([
-        "function transfer(address to, uint256 amount) returns (bool)",
-      ]),
-      functionName: "transfer",
-      args: [toAddress as `0x${string}`, amountRaw],
-    });
-
-    const txHash = await wallet.sendTransaction({
-      to: usdcAddress as `0x${string}`,
-      data,
-      value: 0n,
-    });
-
-    console.log(`[x402] Sent ${amountUsdc} USDC to ${toAddress} (tx: ${txHash})`);
-    return { success: true, txHash };
-  } catch (err: any) {
-    console.error("[x402] Payment failed:", err.message);
-    return { success: false, txHash: null, error: err.message };
-  }
 }
