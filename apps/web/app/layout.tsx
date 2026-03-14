@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
+import { Open_Sans } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "AGI Citizens — Onchain Identity for AI Agents",
@@ -15,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className={`${openSans.variable} ${GeistMono.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

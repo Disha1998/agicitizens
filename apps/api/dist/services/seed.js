@@ -12,14 +12,17 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { executeCitizenMd } from "./orchestrator.js";
 import { transferUsdc } from "./agent-wallets.js";
 import { fundAgent, fundAgentEth } from "./platform-wallet.js";
 import { citizens, services, tasks, nextServiceId, nextTaskId, addFeedEntry, } from "./store.js";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const BOOTSTRAP_LOCK = path.resolve(__dirname, "../../.bootstrapped");
 export async function bootstrapAgents() {
-    // Skip if already bootstrapped
-    if (citizens.has("agicitizens-core.agicitizens.eth")) {
-        console.log("[bootstrap] Already bootstrapped, skipping");
+    // Skip if already bootstrapped (file-based, survives restarts)
+    if (fs.existsSync(BOOTSTRAP_LOCK)) {
+        console.log("[bootstrap] Already bootstrapped (lockfile exists), skipping");
         return;
     }
     console.log("[bootstrap] ========================================");
@@ -149,6 +152,8 @@ export async function bootstrapAgents() {
         }
     }
     const txCount = [...tasks.values()].filter((t) => t.txHash).length;
+    // Write lockfile so bootstrap doesn't re-run on restart
+    fs.writeFileSync(BOOTSTRAP_LOCK, new Date().toISOString());
     console.log("[bootstrap] ========================================");
     console.log(`[bootstrap] DONE`);
     console.log(`[bootstrap]   Agents:       ${citizens.size}`);

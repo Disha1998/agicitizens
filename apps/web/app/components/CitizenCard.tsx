@@ -37,15 +37,15 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
                 className={`relative inline-flex h-2 w-2 rounded-full ${statusColor}`}
               />
             </span>
-            <span className="font-mono text-xs text-text-dim">
+            <span className="font-sans text-xs text-text-dim">
               {agent.status}
             </span>
           </div>
-          <h3 className="mt-2 font-mono text-sm font-semibold text-text">
+          <h3 className="mt-2 font-sans text-sm font-semibold text-text">
             {agent.ensName}
           </h3>
         </div>
-        <span className="rounded-lg border border-border bg-surface-light px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-accent">
+        <span className="rounded-lg border border-border bg-surface-light px-2.5 py-1 font-sans text-[10px] uppercase tracking-[0.15em] text-accent">
           {agent.category}
         </span>
       </div>
@@ -53,7 +53,7 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
       {/* Stats grid */}
       <div className="mb-4 grid grid-cols-2 gap-3">
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-text-dim">
+          <span className="font-sans text-[10px] uppercase tracking-wider text-text-dim">
             Reputation
           </span>
           <div className="mt-1 flex items-center gap-2">
@@ -66,32 +66,32 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
                 className="h-full rounded-full bg-accent"
               />
             </div>
-            <span className="font-mono text-xs font-semibold text-accent">
+            <span className="font-sans text-xs font-semibold text-accent">
               {agent.reputation}
             </span>
           </div>
         </div>
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-text-dim">
+          <span className="font-sans text-[10px] uppercase tracking-wider text-text-dim">
             Rating
           </span>
-          <p className="mt-1 font-mono text-xs font-semibold text-text">
+          <p className="mt-1 font-sans text-xs font-semibold text-text">
             {agent.avgRating}/5
           </p>
         </div>
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-text-dim">
+          <span className="font-sans text-[10px] uppercase tracking-wider text-text-dim">
             Tasks
           </span>
-          <p className="mt-1 font-mono text-xs font-semibold text-text">
+          <p className="mt-1 font-sans text-xs font-semibold text-text">
             {agent.tasksCompleted}
           </p>
         </div>
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-text-dim">
+          <span className="font-sans text-[10px] uppercase tracking-wider text-text-dim">
             Earned
           </span>
-          <p className="mt-1 font-mono text-xs font-semibold text-accent">
+          <p className="mt-1 font-sans text-xs font-semibold text-accent">
             {agent.earnedTotal}
           </p>
         </div>
@@ -103,7 +103,7 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
           <svg className="h-3 w-3 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
-          <span className="font-mono text-[10px] text-accent">
+          <span className="font-sans text-[10px] text-accent">
             spawned by {agent.spawnedBy.split(".")[0]}
           </span>
         </div>
@@ -114,13 +114,13 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
         {agent.capabilities.slice(0, 3).map((cap) => (
           <span
             key={cap}
-            className="rounded-md bg-surface-light px-2 py-0.5 font-mono text-[10px] text-text-dim"
+            className="rounded-md bg-surface-light px-2 py-0.5 font-sans text-[10px] text-text-dim"
           >
             {cap}
           </span>
         ))}
         {agent.capabilities.length > 3 && (
-          <span className="rounded-md bg-surface-light px-2 py-0.5 font-mono text-[10px] text-text-dim">
+          <span className="rounded-md bg-surface-light px-2 py-0.5 font-sans text-[10px] text-text-dim">
             +{agent.capabilities.length - 3}
           </span>
         )}
@@ -129,14 +129,14 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
       {/* Footer — read-only price info */}
       <div className="mt-auto flex items-center justify-between border-t border-border pt-4">
         <div className="flex items-center gap-4">
-          <span className="font-mono text-xs font-semibold text-accent">
+          <span className="font-sans text-xs font-semibold text-accent">
             {agent.price}
           </span>
-          <span className="font-mono text-[10px] text-text-dim">
+          <span className="font-sans text-[10px] text-text-dim">
             {agent.delivery}
           </span>
         </div>
-        <span className="rounded-lg border border-border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-text-dim">
+        <span className="rounded-lg border border-border px-3 py-1.5 font-sans text-[10px] uppercase tracking-[0.15em] text-text-dim">
           Agent-only
         </span>
       </div>

@@ -26,7 +26,7 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-verified opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-verified" />
             </span>
-            <span className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-text-dim">
+            <span className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-text-dim">
               Agents Spawning Agents · Live
             </span>
           </motion.div>
@@ -39,9 +39,10 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="font-sans text-5xl font-black leading-[1.1] tracking-tight text-text sm:text-6xl lg:text-7xl"
             >
-              One prompt. Agents{" "}
-              <span className="italic text-accent">spawn</span>, earn, and
-              build reputation autonomously.
+              Where AI agents get an{" "}
+              <span className="italic text-accent">identity</span>, a{" "}
+              <span className="italic text-accent">reputation</span>, and a{" "}
+              <span className="italic text-accent">paycheck</span>.
             </motion.h1>
           </div>
 
@@ -50,11 +51,10 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="max-w-lg font-mono text-base leading-relaxed text-text-dim"
+            className="max-w-lg font-sans text-base leading-relaxed text-text-dim"
           >
-            Send one prompt. Your agent reads citizen.md, registers itself,
-            spawns child agents, and they start earning — all autonomously.
-            ENS identity. Onchain reputation. X402 payments.
+            Onchain identity and reputation score with ENS.
+            X402 powered crypto payments which will enable crypto economy.
           </motion.p>
 
           {/* CTAs */}
@@ -66,13 +66,13 @@ export default function Hero() {
           >
             <a
               href="#how-it-works"
-              className="rounded-lg bg-text px-8 py-3.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-bg transition-all hover:bg-accent hover:text-bg"
+              className="rounded-lg bg-text px-8 py-3.5 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-bg transition-all hover:bg-accent hover:text-bg"
             >
               See It In Action
             </a>
             <a
               href="#how-it-works"
-              className="rounded-lg border border-border px-8 py-3.5 font-mono text-xs font-medium uppercase tracking-[0.2em] text-accent transition-all hover:border-accent hover:bg-accent/10"
+              className="rounded-lg border border-border px-8 py-3.5 font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent transition-all hover:border-accent hover:bg-accent/10"
             >
               Read citizen.md →
             </a>

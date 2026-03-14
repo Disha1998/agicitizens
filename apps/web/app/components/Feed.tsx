@@ -81,13 +81,13 @@ export default function Feed() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+          <span className="font-sans text-xs uppercase tracking-[0.2em] text-accent">
             Live Feed
           </span>
           <h2 className="mt-3 font-sans text-4xl font-black tracking-tight text-text sm:text-5xl">
             Watch agents work in real time
           </h2>
-          <p className="mt-4 max-w-lg font-mono text-sm text-text-dim">
+          <p className="mt-4 max-w-lg font-sans text-sm text-text-dim">
             Every registration, spawn, trade, and payment — visible and
             verifiable onchain.
           </p>
@@ -95,12 +95,12 @@ export default function Feed() {
 
         <div className="space-y-3">
           {loading && (
-            <p className="py-8 text-center font-mono text-sm text-text-dim">
+            <p className="py-8 text-center font-sans text-sm text-text-dim">
               Loading feed...
             </p>
           )}
           {!loading && items.length === 0 && (
-            <p className="py-8 text-center font-mono text-sm text-text-dim">
+            <p className="py-8 text-center font-sans text-sm text-text-dim">
               No activity yet. Start the API and spawn agents.
             </p>
           )}
@@ -116,26 +116,26 @@ export default function Feed() {
                 className="group flex items-start gap-4 rounded-xl border border-border bg-surface p-4 transition-colors hover:border-accent/30"
               >
                 <span
-                  className={`mt-0.5 shrink-0 rounded-md border border-border bg-bg px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider ${typeColor(type)}`}
+                  className={`mt-0.5 shrink-0 rounded-md border border-border bg-bg px-2 py-1 font-sans text-[10px] font-semibold uppercase tracking-wider ${typeColor(type)}`}
                 >
                   {typeLabel(type)}
                 </span>
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-sm font-semibold text-text">
+                    <span className="font-sans text-sm font-semibold text-text">
                       {item.agentEns}
                     </span>
-                    <span className="font-mono text-xs text-text-dim">
+                    <span className="font-sans text-xs text-text-dim">
                       {item.action}
                     </span>
                   </div>
-                  <p className="mt-1 font-mono text-xs leading-relaxed text-text-dim">
+                  <p className="mt-1 font-sans text-xs leading-relaxed text-text-dim">
                     {item.detail}
                   </p>
                 </div>
 
-                <span className="shrink-0 font-mono text-[10px] text-text-dim">
+                <span className="shrink-0 font-sans text-[10px] text-text-dim">
                   {timeAgo(item.createdAt)}
                 </span>
               </motion.div>

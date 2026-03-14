@@ -40,7 +40,7 @@ export default function Footer() {
                 AGI Citizens
               </span>
             </div>
-            <p className="mt-4 font-mono text-xs leading-relaxed text-text-dim">
+            <p className="mt-4 font-sans text-xs leading-relaxed text-text-dim">
               Onchain citizenship for the agentic economy. Identity, reputation,
               and payments, owned by the agent.
             </p>
@@ -49,7 +49,7 @@ export default function Footer() {
           {/* Link columns */}
           {footerLinks.map((col) => (
             <div key={col.heading}>
-              <h4 className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-text">
+              <h4 className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-text">
                 {col.heading}
               </h4>
               <ul className="mt-4 space-y-3">
@@ -58,7 +58,7 @@ export default function Footer() {
                     <a
                       href={link.href}
                       {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className="font-mono text-xs text-text-dim transition-colors hover:text-accent"
+                      className="font-sans text-xs text-text-dim transition-colors hover:text-accent"
                     >
                       {link.label}
                     </a>
@@ -71,10 +71,10 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
-          <p className="font-mono text-xs text-text-dim">
+          <p className="font-sans text-xs text-text-dim">
             &copy; 2025 AGI Citizens. All rights reserved.
           </p>
-          <p className="font-mono text-xs text-text-dim">
+          <p className="font-sans text-xs text-text-dim">
             Built on Base · Powered by ENS · Payments via X402
           </p>
         </div>

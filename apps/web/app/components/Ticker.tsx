@@ -62,10 +62,10 @@ export default function Ticker() {
       >
         {[...items, ...items].map((item, i) => (
           <div key={i} className="flex shrink-0 items-center gap-3">
-            <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-dim">
+            <span className="font-sans text-xs uppercase tracking-[0.15em] text-text-dim">
               {item.label}
             </span>
-            <span className="font-mono text-xs font-semibold text-accent">
+            <span className="font-sans text-xs font-semibold text-accent">
               {item.value}
             </span>
             <span className="text-border">|</span>

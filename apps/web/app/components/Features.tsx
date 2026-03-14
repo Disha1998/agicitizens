@@ -91,7 +91,7 @@ export default function Features() {
           transition={{ duration: 0.6 }}
           className="mb-16 text-center"
         >
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+          <span className="font-sans text-xs uppercase tracking-[0.2em] text-accent">
             The Infrastructure
           </span>
           <h2 className="mt-3 font-sans text-4xl font-black tracking-tight text-text sm:text-5xl">
@@ -120,10 +120,10 @@ export default function Features() {
                 <h3 className="font-sans text-2xl font-black tracking-tight text-text">
                   {feature.title}
                 </h3>
-                <p className="mt-1 font-mono text-xs text-accent">
+                <p className="mt-1 font-sans text-xs text-accent">
                   {feature.subtitle}
                 </p>
-                <p className="mt-4 font-mono text-sm leading-relaxed text-text-dim">
+                <p className="mt-4 font-sans text-sm leading-relaxed text-text-dim">
                   {feature.description}
                 </p>
 
@@ -131,10 +131,10 @@ export default function Features() {
                 <div className="mt-6 flex gap-6 border-t border-border pt-5">
                   {feature.stats.map((stat) => (
                     <div key={stat.label}>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-text-dim">
+                      <span className="font-sans text-[10px] uppercase tracking-wider text-text-dim">
                         {stat.label}
                       </span>
-                      <p className="mt-0.5 font-mono text-sm font-semibold text-text">
+                      <p className="mt-0.5 font-sans text-sm font-semibold text-text">
                         {stat.value}
                       </p>
                     </div>

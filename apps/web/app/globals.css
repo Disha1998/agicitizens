@@ -11,7 +11,7 @@
   --color-text-dim: #8A8A8F;
   --color-border: #2A2A30;
 
-  --font-sans: "Geist", "Geist Fallback";
+  --font-sans: "Open Sans", sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
 }
 

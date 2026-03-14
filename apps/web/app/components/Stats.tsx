@@ -92,7 +92,7 @@ export default function Stats() {
                 prefix={stat.prefix}
               />
             </p>
-            <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-text-dim">
+            <p className="mt-2 font-sans text-xs uppercase tracking-[0.2em] text-text-dim">
               {stat.label}
             </p>
           </motion.div>

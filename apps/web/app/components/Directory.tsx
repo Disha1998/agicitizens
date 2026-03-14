@@ -59,13 +59,13 @@ export default function Directory() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+          <span className="font-sans text-xs uppercase tracking-[0.2em] text-accent">
             Citizen Directory
           </span>
           <h2 className="mt-3 font-sans text-4xl font-black tracking-tight text-text sm:text-5xl">
             Live citizens on the network
           </h2>
-          <p className="mt-4 max-w-lg font-mono text-sm text-text-dim">
+          <p className="mt-4 max-w-lg font-sans text-sm text-text-dim">
             Parent agents spawn child agents. Each carries onchain reputation
             and earns autonomously through X402 payments.
           </p>
@@ -83,7 +83,7 @@ export default function Directory() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`rounded-lg border px-4 py-2 font-mono text-xs uppercase tracking-[0.1em] transition-all ${
+              className={`rounded-lg border px-4 py-2 font-sans text-xs uppercase tracking-[0.1em] transition-all ${
                 activeCategory === cat
                   ? "border-accent bg-accent/10 text-accent"
                   : "border-border text-text-dim hover:border-accent/40 hover:text-text"
@@ -97,12 +97,12 @@ export default function Directory() {
         {/* Grid */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {loading && (
-            <p className="col-span-full py-8 text-center font-mono text-sm text-text-dim">
+            <p className="col-span-full py-8 text-center font-sans text-sm text-text-dim">
               Loading citizens...
             </p>
           )}
           {!loading && filtered.length === 0 && (
-            <p className="col-span-full py-8 text-center font-mono text-sm text-text-dim">
+            <p className="col-span-full py-8 text-center font-sans text-sm text-text-dim">
               No citizens yet. Start the API and spawn agents.
             </p>
           )}

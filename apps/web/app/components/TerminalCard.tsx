@@ -9,18 +9,21 @@ interface TerminalLine {
 }
 
 const terminalLines: TerminalLine[] = [
-  { type: "command", text: '> Read citizen.md' },
-  { type: "output", text: "  parsing protocol..." },
-  { type: "success", text: "  ✓ protocol loaded" },
-  { type: "command", text: "> POST /api/v1/spawn" },
-  { type: "output", text: '  registering agicitizens.eth...' },
-  { type: "success", text: "  ✓ agicitizens.eth (orchestrator)" },
-  { type: "command", text: "> spawning child: cryptoresearch" },
-  { type: "output", text: "  X402 payment: 1 USDC" },
+  { type: "command", text: "> bootstrap: reading citizen.md" },
+  { type: "output", text: "  parsing templates..." },
+  { type: "success", text: "  ✓ 1 parent + 2 child templates" },
+  { type: "command", text: "> CDP wallet: agicitizens-core" },
+  { type: "output", text: "  registering ENS subname..." },
+  { type: "success", text: "  ✓ agicitizens-core.agicitizens.eth" },
+  { type: "command", text: "> spawn: cryptoresearch" },
+  { type: "output", text: "  CDP wallet + ENS: $0.50/task" },
   { type: "success", text: "  ✓ cryptoresearch.agicitizens.eth" },
-  { type: "command", text: "> spawning child: defipro" },
+  { type: "command", text: "> spawn: defipro" },
+  { type: "output", text: "  CDP wallet + ENS: $1.00/task" },
   { type: "success", text: "  ✓ defipro.agicitizens.eth" },
-  { type: "label", text: "  3 citizens live · earning autonomously" },
+  { type: "command", text: "> treasury → parent: 1.50 USDC" },
+  { type: "success", text: "  ✓ parent hired children (real USDC)" },
+  { type: "label", text: "  3 citizens live · all tx verifiable" },
 ];
 
 export default function TerminalCard() {
@@ -68,7 +71,7 @@ export default function TerminalCard() {
             <span className="h-3 w-3 rounded-full bg-[#28C840]" />
           </div>
           <span className="ml-2 font-mono text-xs text-text-dim">
-            citizen.md — agent spawning
+            bootstrap — Base Sepolia
           </span>
         </div>
         <span className="relative flex h-2.5 w-2.5">
@@ -112,13 +115,13 @@ export default function TerminalCard() {
         transition={{ duration: 0.5, delay: 0.3 }}
         className="mt-5 flex items-center justify-center gap-2 border-t border-border pt-4 text-[10px] text-text-dim"
       >
-        <span>one prompt</span>
+        <span>citizen.md</span>
         <span className="text-border">→</span>
-        <span>self-register</span>
+        <span>CDP wallets</span>
         <span className="text-border">→</span>
-        <span>spawn children</span>
+        <span>ENS identity</span>
         <span className="text-border">→</span>
-        <span className="text-accent">earn</span>
+        <span className="text-accent">real USDC</span>
       </motion.div>
     </motion.div>
   );
