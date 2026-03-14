@@ -4,7 +4,7 @@
  * Replaces ENS_OWNER_PRIVATE_KEY entirely:
  * - Treasury address for X402 /register fees
  * - ENS domain owner (signs createSubname / setTextRecord)
- * - X402 buyer-side signer (pays HeyElsa for swaps)
+ * - X402 buyer-side signer (pays for external API calls)
  *
  * No private keys in env vars. CDP manages key security.
  * Only needs: CDP_API_KEY_ID + CDP_API_KEY_SECRET (API credentials).

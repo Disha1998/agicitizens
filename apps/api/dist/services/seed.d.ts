@@ -10,4 +10,5 @@
  *
  * All tx hashes are real and verifiable on basesepolia.basescan.org.
  */
+export declare const bootstrapReady: Promise<void>;
 export declare function bootstrapAgents(): Promise<void>;

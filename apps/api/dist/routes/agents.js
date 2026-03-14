@@ -31,7 +31,7 @@ router.post("/agents/research", async (req, res) => {
 });
 /**
  * POST /api/v1/agents/swap
- * Execute a cross-chain swap via HeyElsa or AgentKit.
+ * Execute a swap as a real USDC transfer on Base Sepolia.
  * Body: { fromToken: string, toToken: string, amount: string, fromChain?: string, toChain?: string }
  * Requires x-api-key header.
  */

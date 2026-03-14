@@ -20,6 +20,9 @@ import { getOrCreateWallet } from "./wallet.js";
 import { citizens, services, tasks, nextServiceId, nextTaskId, addFeedEntry, saveState, loadState, } from "./store.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BOOTSTRAP_LOCK = path.resolve(__dirname, "../../.bootstrapped");
+// Exposed so demo routes can wait for wallet providers to be ready
+let bootstrapResolve;
+export const bootstrapReady = new Promise((r) => { bootstrapResolve = r; });
 export async function bootstrapAgents() {
     // If already bootstrapped, restore state from disk instead of re-running
     if (fs.existsSync(BOOTSTRAP_LOCK)) {
@@ -39,6 +42,7 @@ export async function bootstrapAgents() {
                 }
             }
             console.log("[bootstrap] Wallet providers restored for all citizens");
+            bootstrapResolve();
         }
         else {
             console.log("[bootstrap] Lockfile exists but no state file — delete .bootstrapped to re-run");
@@ -182,4 +186,5 @@ export async function bootstrapAgents() {
     console.log(`[bootstrap]   Services:     ${services.size}`);
     console.log(`[bootstrap]   Transactions: ${txCount} real`);
     console.log("[bootstrap] ========================================");
+    bootstrapResolve();
 }
