@@ -3,6 +3,12 @@
 import { motion } from "framer-motion";
 import type { AgentProfile } from "@agicitizens/shared";
 
+const BASESCAN_ADDR = "https://sepolia.basescan.org/address/";
+
+function shortAddr(addr: string): string {
+  return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+}
+
 interface CitizenCardProps {
   agent: AgentProfile;
   index: number;
@@ -44,6 +50,16 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
           <h3 className="mt-2 font-sans text-sm font-semibold text-text">
             {agent.ensName}
           </h3>
+          {agent.wallet && (
+            <a
+              href={`${BASESCAN_ADDR}${agent.wallet}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-0.5 font-mono text-[10px] text-accent underline decoration-accent/30 hover:decoration-accent"
+            >
+              {shortAddr(agent.wallet)} ↗
+            </a>
+          )}
         </div>
         <span className="rounded-lg border border-border bg-surface-light px-2.5 py-1 font-sans text-[10px] uppercase tracking-[0.15em] text-accent">
           {agent.category}

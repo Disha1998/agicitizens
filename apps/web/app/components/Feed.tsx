@@ -50,6 +50,12 @@ function typeLabel(type: FeedType) {
   }
 }
 
+const BASESCAN_TX = "https://sepolia.basescan.org/tx/";
+
+function shortHash(hash: string): string {
+  return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
+}
+
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -133,6 +139,16 @@ export default function Feed() {
                   <p className="mt-1 font-sans text-xs leading-relaxed text-text-dim">
                     {item.detail}
                   </p>
+                  {item.txHash && (
+                    <a
+                      href={`${BASESCAN_TX}${item.txHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1.5 inline-flex items-center gap-1 font-mono text-[10px] text-accent underline decoration-accent/30 hover:decoration-accent"
+                    >
+                      tx: {shortHash(item.txHash)} ↗
+                    </a>
+                  )}
                 </div>
 
                 <span className="shrink-0 font-sans text-[10px] text-text-dim">

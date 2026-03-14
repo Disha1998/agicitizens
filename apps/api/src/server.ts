@@ -23,6 +23,7 @@ import feedRoutes from "./routes/feed.js";
 import citizensRoutes from "./routes/citizens.js";
 import agentsRoutes from "./routes/agents.js";
 import statsRoutes from "./routes/stats.js";
+import demoRoutes from "./routes/demo.js";
 import { buildPaymentMiddleware } from "./services/x402.js";
 import { bootstrapAgents } from "./services/seed.js";
 
@@ -65,6 +66,7 @@ app.use(v1, feedRoutes);
 app.use(v1, citizensRoutes);
 app.use(v1, agentsRoutes);
 app.use(v1, statsRoutes);
+app.use(v1, demoRoutes);
 
 // Start
 app.listen(PORT, () => {
@@ -87,6 +89,10 @@ app.listen(PORT, () => {
   console.log(`  POST ${v1}/agents/research`);
   console.log(`  POST ${v1}/agents/swap`);
   console.log(`  GET  ${v1}/stats`);
+  console.log(`  POST ${v1}/demo/research`);
+  console.log(`  POST ${v1}/demo/swap`);
+  console.log(`  POST ${v1}/demo/hire`);
+  console.log(`  GET  ${v1}/demo/agents`);
 });
 
 export default app;

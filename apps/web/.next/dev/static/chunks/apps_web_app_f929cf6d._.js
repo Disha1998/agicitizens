@@ -821,10 +821,18 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 "use strict";
 
 __turbopack_context__.s([
+    "demoHire",
+    ()=>demoHire,
+    "demoResearch",
+    ()=>demoResearch,
+    "demoSwap",
+    ()=>demoSwap,
     "getCitizen",
     ()=>getCitizen,
     "getCitizens",
     ()=>getCitizens,
+    "getDemoAgents",
+    ()=>getDemoAgents,
     "getFeed",
     ()=>getFeed,
     "getStats",
@@ -859,6 +867,35 @@ async function getFeed(limit = 20) {
 }
 async function getStats() {
     return fetchApi("/stats");
+}
+async function getDemoAgents() {
+    return fetchApi("/demo/agents");
+}
+async function demoResearch(token) {
+    return fetchApi("/demo/research", {
+        method: "POST",
+        body: JSON.stringify({
+            token
+        })
+    });
+}
+async function demoSwap(fromToken, toToken, amount) {
+    return fetchApi("/demo/swap", {
+        method: "POST",
+        body: JSON.stringify({
+            fromToken,
+            toToken,
+            amount
+        })
+    });
+}
+async function demoHire(serviceId) {
+    return fetchApi("/demo/hire", {
+        method: "POST",
+        body: JSON.stringify({
+            service_id: serviceId
+        })
+    });
 }
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
