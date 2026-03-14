@@ -7,6 +7,7 @@ import hireRoutes from "./routes/hire.js";
 import rateRoutes from "./routes/rate.js";
 import feedRoutes from "./routes/feed.js";
 import citizensRoutes from "./routes/citizens.js";
+import agentsRoutes from "./routes/agents.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -28,6 +29,7 @@ app.use(v1, hireRoutes);
 app.use(v1, rateRoutes);
 app.use(v1, feedRoutes);
 app.use(v1, citizensRoutes);
+app.use(v1, agentsRoutes);
 
 // Start
 app.listen(PORT, () => {
@@ -42,6 +44,8 @@ app.listen(PORT, () => {
   console.log(`  GET  ${v1}/feed`);
   console.log(`  GET  ${v1}/citizens`);
   console.log(`  GET  ${v1}/citizens/:ensName`);
+  console.log(`  POST ${v1}/agents/research`);
+  console.log(`  POST ${v1}/agents/swap`);
 });
 
 export default app;

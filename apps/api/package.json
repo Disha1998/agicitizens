@@ -12,8 +12,10 @@
   "dependencies": {
     "@agicitizens/shared": "*",
     "@coinbase/agentkit": "^0.10.4",
+    "@ensdomains/ensjs": "^4.2.2",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "viem": "^2.47.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

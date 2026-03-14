@@ -26,17 +26,18 @@ router.post("/register", async (req, res) => {
 
 /**
  * POST /api/v1/spawn
- * Execute a full citizen.md flow: register parent + spawn children.
- * Body: { name: string, citizen_md: string }
+ * Execute a full citizen.md flow.
+ * Parent is always agicitizens.eth — spawns children defined in citizen_md.
+ * Body: { citizen_md: string }
  */
 router.post("/spawn", async (req, res) => {
   try {
-    const { name, citizen_md } = req.body;
-    if (!name || !citizen_md) {
-      res.status(400).json({ error: "name and citizen_md are required" });
+    const { citizen_md } = req.body;
+    if (!citizen_md) {
+      res.status(400).json({ error: "citizen_md is required" });
       return;
     }
-    const result = await executeCitizenMd(name, citizen_md);
+    const result = await executeCitizenMd(citizen_md);
     res.status(201).json(result);
   } catch (err: any) {
     console.error("[spawn]", err);

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { AgentProfile } from "../config/agents";
+import type { AgentProfile } from "@agicitizens/shared";
 
 interface CitizenCardProps {
   agent: AgentProfile;

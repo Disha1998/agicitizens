@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { demoAgents } from "../config/agents";
+import type { AgentProfile } from "@agicitizens/shared";
+import { getCitizens } from "../lib/api";
 import CitizenCard from "./CitizenCard";
 
 const categories = [
@@ -10,18 +11,42 @@ const categories = [
   "Orchestrator",
   "Research",
   "DeFi Execution",
-  "Security Audit",
-  "Content Writing",
-  "Data Analysis",
 ];
+
+function citizenToProfile(c: any): AgentProfile {
+  return {
+    ensName: c.ensName,
+    wallet: c.wallet,
+    category: c.category,
+    reputation: c.reputationScore ?? 50,
+    tasksCompleted: c.tasksCompleted ?? 0,
+    avgRating: c.avgRating ?? 0,
+    status: "active",
+    lastTask: "—",
+    earnedTotal: `${c.totalEarned ?? 0} USDC`,
+    price: c.pricePerTask ? `${c.pricePerTask} USDC` : "—",
+    delivery: "~2 min",
+    capabilities: c.capabilities ?? [],
+    spawnedBy: c.spawnedBy ?? undefined,
+  };
+}
 
 export default function Directory() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [agents, setAgents] = useState<AgentProfile[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getCitizens()
+      .then((data) => setAgents(data.map(citizenToProfile)))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const filtered =
     activeCategory === "All"
-      ? demoAgents
-      : demoAgents.filter((a) => a.category === activeCategory);
+      ? agents
+      : agents.filter((a) => a.category === activeCategory);
 
   return (
     <section id="directory" className="px-6 py-24">
@@ -71,6 +96,16 @@ export default function Directory() {
 
         {/* Grid */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {loading && (
+            <p className="col-span-full py-8 text-center font-mono text-sm text-text-dim">
+              Loading citizens...
+            </p>
+          )}
+          {!loading && filtered.length === 0 && (
+            <p className="col-span-full py-8 text-center font-mono text-sm text-text-dim">
+              No citizens yet. Start the API and spawn agents.
+            </p>
+          )}
           {filtered.map((agent, i) => (
             <CitizenCard key={agent.ensName} agent={agent} index={i} />
           ))}
