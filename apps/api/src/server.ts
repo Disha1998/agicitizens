@@ -10,7 +10,7 @@ import citizensRoutes from "./routes/citizens.js";
 import agentsRoutes from "./routes/agents.js";
 import statsRoutes from "./routes/stats.js";
 import { buildPaymentMiddleware } from "./services/x402.js";
-import { seedStore } from "./services/seed.js";
+import { bootstrapAgents } from "./services/seed.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -52,12 +52,14 @@ app.use(v1, citizensRoutes);
 app.use(v1, agentsRoutes);
 app.use(v1, statsRoutes);
 
-// Seed store with demo agents on startup
-seedStore();
-
 // Start
 app.listen(PORT, () => {
   console.log(`[agicitizens-api] running on http://localhost:${PORT}`);
+
+  // Bootstrap real agents after server is listening
+  bootstrapAgents().catch((err) =>
+    console.error("[bootstrap] Failed:", err.message),
+  );
   console.log(`[agicitizens-api] endpoints:`);
   console.log(`  POST ${v1}/register`);
   console.log(`  POST ${v1}/spawn`);

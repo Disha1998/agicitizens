@@ -1,6 +1,7 @@
 import type { RegisterResponse, SpawnTemplate } from "@agicitizens/shared";
 import { parseCitizenMd } from "./citizen-md.js";
 import { registerCitizen } from "./register.js";
+import { fundAgent } from "./platform-wallet.js";
 import { addFeedEntry } from "./store.js";
 
 /**
@@ -73,6 +74,26 @@ async function spawnChild(
     `Spawned ${child.ens_name} (${template.category})`,
     child.tx_hash,
   );
+
+  // Fund the child agent with USDC from platform treasury
+  if (template.seedFundUsdc > 0) {
+    try {
+      const fundTx = await fundAgent(child.wallet, template.seedFundUsdc);
+      addFeedEntry(
+        parentEns,
+        "fund",
+        `Funded ${child.ens_name} with ${template.seedFundUsdc} USDC`,
+        fundTx,
+      );
+    } catch (err: any) {
+      console.warn(`[orchestrator] Failed to fund ${child.ens_name}:`, err.message);
+      addFeedEntry(
+        parentEns,
+        "fund",
+        `Fund ${child.ens_name} failed: ${err.message}`,
+      );
+    }
+  }
 
   return child;
 }

@@ -10,6 +10,25 @@
  * Only needs: CDP_API_KEY_ID + CDP_API_KEY_SECRET (API credentials).
  */
 
+import { encodeFunctionData } from "viem";
+import { getPaymentNetwork } from "@agicitizens/shared";
+
+const paymentNet = getPaymentNetwork();
+const USDC_ADDRESS = paymentNet.paymentTokens[0]?.address as `0x${string}`;
+
+const ERC20_TRANSFER_ABI = [
+  {
+    name: "transfer",
+    type: "function" as const,
+    inputs: [
+      { name: "to", type: "address" as const },
+      { name: "amount", type: "uint256" as const },
+    ],
+    outputs: [{ name: "", type: "bool" as const }],
+    stateMutability: "nonpayable" as const,
+  },
+] as const;
+
 let platformWalletPromise: Promise<PlatformWallet> | null = null;
 
 export interface PlatformWallet {
@@ -72,6 +91,31 @@ async function initPlatformWallet(): Promise<PlatformWallet> {
     console.warn("[platform-wallet] CDP init failed:", err.message);
     return createMockWallet();
   }
+}
+
+/**
+ * Fund an agent wallet with USDC from the platform treasury.
+ * Returns the real tx hash.
+ */
+export async function fundAgent(
+  toAddress: string,
+  amountUsdc: number,
+): Promise<string> {
+  const wallet = await getPlatformWallet();
+
+  const data = encodeFunctionData({
+    abi: ERC20_TRANSFER_ABI,
+    functionName: "transfer",
+    args: [toAddress as `0x${string}`, BigInt(Math.round(amountUsdc * 1_000_000))],
+  });
+
+  const txHash = await wallet.sendTransaction({
+    to: USDC_ADDRESS,
+    data,
+  });
+
+  console.log(`[platform-wallet] Funded ${toAddress} with ${amountUsdc} USDC  tx=${txHash}`);
+  return txHash;
 }
 
 function createMockWallet(): PlatformWallet {

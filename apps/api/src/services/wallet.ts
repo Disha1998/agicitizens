@@ -6,6 +6,8 @@
 export interface WalletInfo {
   address: string;
   walletId: string;
+  /** CDP wallet provider instance — null in mock mode */
+  provider: any | null;
 }
 
 export async function createWallet(): Promise<WalletInfo> {
@@ -20,11 +22,11 @@ export async function createWallet(): Promise<WalletInfo> {
     });
 
     const address = wallet.getAddress();
-    return { address, walletId: address };
-  } catch (err) {
-    console.warn("[wallet] AgentKit not configured, using mock wallet");
+    return { address, walletId: address, provider: wallet };
+  } catch (err: any) {
+    console.warn("[wallet] AgentKit wallet creation failed:", err.message);
     const address = `0x${randomHex(40)}`;
-    return { address, walletId: address };
+    return { address, walletId: address, provider: null };
   }
 }
 

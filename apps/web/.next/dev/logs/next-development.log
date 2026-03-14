@@ -1,78 +1,13 @@
-[00:00:00.682] Server  LOG     ✓ Ready in 509ms
-[00:00:02.056] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:02.174] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:02.351] Browser ERROR   [ticker] {}
-[00:00:02.351] Browser ERROR   [stats] {}
-[00:00:03.350] Browser ERROR   [ticker] {}
-[00:00:03.350] Browser ERROR   [stats] {}
-[00:00:32.301] Browser ERROR   [ticker] {}
-[00:00:33.351] Browser ERROR   [ticker] {}
-[00:01:02.291] Browser ERROR   [ticker] {}
-[00:01:03.352] Browser ERROR   [ticker] {}
-[00:01:32.296] Browser ERROR   [ticker] {}
-[00:01:33.351] Browser ERROR   [ticker] {}
-[00:02:02.286] Browser ERROR   [ticker] {}
-[00:02:03.356] Browser ERROR   [ticker] {}
-[00:02:32.291] Browser ERROR   [ticker] {}
-[00:02:33.351] Browser ERROR   [ticker] {}
-[00:03:02.288] Browser ERROR   [ticker] {}
-[00:03:03.362] Browser ERROR   [ticker] {}
-[00:03:33.353] Browser ERROR   [ticker] {}
-[00:03:46.350] Browser ERROR   [ticker] {}
-[00:04:03.351] Browser ERROR   [ticker] {}
-[00:04:33.351] Browser ERROR   [ticker] {}
-[00:04:46.351] Browser ERROR   [ticker] {}
-[00:05:03.350] Browser ERROR   [ticker] {}
-[00:05:33.352] Browser ERROR   [ticker] {}
-[00:05:46.352] Browser ERROR   [ticker] {}
-[00:06:03.352] Browser ERROR   [ticker] {}
-[00:06:33.353] Browser ERROR   [ticker] {}
-[00:06:46.353] Browser ERROR   [ticker] {}
-[00:06:48.716] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:06:48.875] Browser ERROR   [ticker] {}
-[00:06:48.875] Browser ERROR   [stats] {}
-[00:07:18.863] Browser ERROR   [ticker] {}
-[00:07:46.353] Browser ERROR   [ticker] {}
-[00:07:48.912] Browser ERROR   [ticker] {}
-[00:08:18.869] Browser ERROR   [ticker] {}
-[00:08:46.353] Browser ERROR   [ticker] {}
-[00:08:48.860] Browser ERROR   [ticker] {}
-[00:09:18.875] Browser ERROR   [ticker] {}
-[00:09:46.352] Browser ERROR   [ticker] {}
-[00:09:50.350] Browser ERROR   [ticker] {}
-[00:10:20.351] Browser ERROR   [ticker] {}
-[00:10:46.352] Browser ERROR   [ticker] {}
-[00:10:49.611] Browser ERROR   [ticker] {}
-[00:11:00.240] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:11:00.393] Browser ERROR   [ticker] {}
-[00:11:00.393] Browser ERROR   [stats] {}
-[00:11:31.351] Browser ERROR   [ticker] {}
-[00:11:46.351] Browser ERROR   [ticker] {}
-[00:12:01.352] Browser ERROR   [ticker] {}
-[00:12:31.354] Browser ERROR   [ticker] {}
-[00:12:46.352] Browser ERROR   [ticker] {}
-[00:13:01.351] Browser ERROR   [ticker] {}
-[00:13:31.355] Browser ERROR   [ticker] {}
-[00:13:46.360] Browser ERROR   [ticker] {}
-[00:14:00.419] Browser ERROR   [ticker] {}
-[00:14:30.385] Browser ERROR   [ticker] {}
-[00:14:46.349] Browser ERROR   [ticker] {}
-[00:15:00.393] Browser ERROR   [ticker] {}
-[00:15:30.387] Browser ERROR   [ticker] {}
-[00:15:46.351] Browser ERROR   [ticker] {}
-[00:16:00.388] Browser ERROR   [ticker] {}
-[00:16:30.398] Browser ERROR   [ticker] {}
-[00:16:46.351] Browser ERROR   [ticker] {}
-[00:17:00.401] Browser ERROR   [ticker] {}
-[00:17:30.383] Browser ERROR   [ticker] {}
-[00:17:46.352] Browser ERROR   [ticker] {}
-[00:18:00.387] Browser ERROR   [ticker] {}
-[00:18:30.387] Browser ERROR   [ticker] {}
-[00:18:46.351] Browser ERROR   [ticker] {}
-[00:19:00.380] Browser ERROR   [ticker] {}
-[00:19:30.380] Browser ERROR   [ticker] {}
-[00:19:46.351] Browser ERROR   [ticker] {}
-[00:20:00.379] Browser ERROR   [ticker] {}
-[00:20:30.379] Browser ERROR   [ticker] {}
-[00:20:46.351] Browser ERROR   [ticker] {}
-[00:22:38.368] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:00.710] Server  LOG     ✓ Ready in 517ms
+[00:00:01.360] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:02.369] Browser ERROR   [ticker] {}
+[00:00:02.369] Browser ERROR   [stats] {}
+[00:00:02.369] Browser ERROR   [feed] {}
+[00:00:02.369] Browser ERROR   [directory] {}
+[00:00:05.215] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:05.371] Browser ERROR   [ticker] {}
+[00:00:05.371] Browser ERROR   [stats] {}
+[00:00:05.371] Browser ERROR   [feed] {}
+[00:00:05.371] Browser ERROR   [directory] {}
+[00:00:27.778] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:30.801] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

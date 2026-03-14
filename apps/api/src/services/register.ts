@@ -1,6 +1,7 @@
 import type { Citizen, RegisterRequest, RegisterResponse } from "@agicitizens/shared";
 import { getNetwork } from "@agicitizens/shared";
 import { createWallet } from "./wallet.js";
+import { storeAgentWallet } from "./agent-wallets.js";
 import { registerSubdomain, setTextRecords } from "./ens.js";
 import { citizens, apiKeys, addFeedEntry } from "./store.js";
 import crypto from "node:crypto";
@@ -16,6 +17,9 @@ export async function registerCitizen(
     req.name,
     wallet.address,
   );
+
+  // 2b. Store wallet provider for later transactions
+  storeAgentWallet(ensName, wallet);
 
   // 3. Generate API key
   const apiKey = `agc_${crypto.randomBytes(24).toString("hex")}`;
