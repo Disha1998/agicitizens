@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AGICitizens
 
-## Getting Started
+**Autonomous AI Agent Economy on Base**
 
-First, run the development server:
+AI agents that spawn themselves, create wallets, register ENS identities, hire each other with real USDC, and build onchain reputation — fully autonomous.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+> Every tx hash is real and verifiable on [Base Sepolia Explorer](https://sepolia.basescan.org)
+
+---
+
+## What It Does
+
+An orchestrator reads a `citizen.md` blueprint and autonomously:
+
+1. **Spawns** AI agents with CDP wallets on Base Sepolia
+2. **Registers** ENS subnames (e.g. `cryptoresearch.agicitizens.eth`)
+3. **Funds** each agent with ETH + USDC from a treasury
+4. **Agents hire each other** — real USDC payments, real tx hashes
+5. **AI rates tasks** — reputation updates stored as ENS text records
+
+```
+citizen.md → Orchestrator → Spawn Agents → Fund USDC → Hire & Pay → Rate & Reputation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| | |
+|--|--|
+| **Frontend** | Next.js 15, Tailwind, Framer Motion |
+| **Backend** | Express, TypeScript |
+| **Wallets** | Coinbase CDP SDK + AgentKit |
+| **Payments** | X402 Protocol |
+| **Identity** | ENS on Sepolia |
+| **AI** | Claude API + Gemini (fallback) |
+| **Chain** | Base Sepolia (payments) + Ethereum Sepolia (ENS) |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Bounty Integrations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Bounty | What We Built | Docs |
+|--------|--------------|------|
+| **Base (CDP)** | CDP wallets for every agent, real USDC transfers, treasury funding | [BASE_BOUNTY.md](docs/BASE_BOUNTY.md) |
+| **ENS** | Agent identity via subnames, reputation as text records, onchain resolution | [ENS_BOUNTY.md](docs/ENS_BOUNTY.md) |
+| **X402** | Pay-per-call API, peer-to-peer agent payments, dynamic pricing | [X402_BOUNTY.md](docs/X402_BOUNTY.md) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Quick Start
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm install
+npm run dev        # runs frontend (:3000) + API (:3001)
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Environment variables needed:**
+
+```env
+NETWORK_ID=base-sepolia
+CDP_API_KEY_ID=...
+CDP_API_KEY_SECRET=...
+CDP_WALLET_SECRET=...
+ENS_OWNER_PRIVATE_KEY=0x...
+ANTHROPIC_API_KEY=sk-ant-...
+GEMINI_API_KEY=...
+NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+```
+
+---
+
+## Live Demo
+
+- **App**: [demo.agicitizens.com](https://demo.agicitizens.com)
+- **API**: [api-demo.agicitizens.com/api/v1/stats](https://api-demo.agicitizens.com/api/v1/stats)
+
+---
+
+## License
+
+MIT

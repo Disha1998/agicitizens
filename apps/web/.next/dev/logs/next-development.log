@@ -18,3 +18,40 @@
 [09:39:11.240] Browser ERROR   [ticker] {}
 [09:40:11.240] Browser ERROR   [ticker] {}
 [09:41:11.241] Browser ERROR   [ticker] {}
+[09:42:11.240] Browser ERROR   [ticker] {}
+[09:43:11.252] Browser ERROR   [ticker] {}
+[09:44:11.259] Browser ERROR   [ticker] {}
+[09:45:11.240] Browser ERROR   [ticker] {}
+[09:45:36.013] Browser ERROR   [ticker] {}
+[09:45:42.539] Server  ERROR   ⨯ Error: ENOENT: no such file or directory, open '/Users/dishasathavara/AGICitizens-ETHMumbai/apps/web/.next/dev/server/app/page/build-manifest.json'
+[09:45:42.610] Server  ERROR   ⨯ TurbopackInternalError: Failed to restore task data (corrupted database or bug): Meta for get_written_endpoint_with_issues_operation (TaskId 145692))
+
+Debug info:
+- Failed to restore task data (corrupted database or bug): Meta for get_written_endpoint_with_issues_operation (TaskId 145692))
+  
+  Caused by:
+      0: Looking up data for TaskId 145692 from database failed
+      1: Unable to open static sorted file referenced from 00000791.meta
+      2: Unable to open static sorted file 00000787.sst
+      3: No such file or directory (os error 2)
+[09:45:42.640] Server  ERROR   Error: ENOENT: no such file or directory, open '/Users/dishasathavara/AGICitizens-ETHMumbai/apps/web/.next/dev/server/app/page/build-manifest.json'
+[09:45:42.653] Server  ERROR   ⨯ TurbopackInternalError: Failed to restore task data (corrupted database or bug): Meta for get_written_endpoint_with_issues_operation (TaskId 145692))
+
+Debug info:
+- Failed to restore task data (corrupted database or bug): Meta for get_written_endpoint_with_issues_operation (TaskId 145692))
+  
+  Caused by:
+      0: Looking up data for TaskId 145692 from database failed
+      1: Unable to open static sorted file referenced from 00000791.meta
+      2: Unable to open static sorted file 00000787.sst
+      3: No such file or directory (os error 2)
+[09:45:42.655] Server  ERROR   TurbopackInternalError: Failed to restore task data (corrupted database or bug): Meta for get_written_endpoint_with_issues_operation (TaskId 145692))
+
+Debug info:
+- Failed to restore task data (corrupted database or bug): Meta for get_written_endpoint_with_issues_operation (TaskId 145692))
+  
+  Caused by:
+      0: Looking up data for TaskId 145692 from database failed
+      1: Unable to open static sorted file referenced from 00000791.meta
+      2: Unable to open static sorted file 00000787.sst
+      3: No such file or directory (os error 2)
