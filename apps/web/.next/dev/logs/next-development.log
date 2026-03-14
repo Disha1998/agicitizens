@@ -1,13 +1,53 @@
-[00:00:00.710] Server  LOG     ✓ Ready in 517ms
-[00:00:01.360] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:02.369] Browser ERROR   [ticker] {}
-[00:00:02.369] Browser ERROR   [stats] {}
-[00:00:02.369] Browser ERROR   [feed] {}
-[00:00:02.369] Browser ERROR   [directory] {}
-[00:00:05.215] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:05.371] Browser ERROR   [ticker] {}
-[00:00:05.371] Browser ERROR   [stats] {}
-[00:00:05.371] Browser ERROR   [feed] {}
-[00:00:05.371] Browser ERROR   [directory] {}
-[00:00:27.778] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:30.801] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:00.692] Server  LOG     ✓ Ready in 511ms
+[00:00:01.417] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:01.434] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:41.752] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:09:30.363] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:21:01.588] Browser LOG     [ChromeTransport] chromePort disconnected
+[01:21:01.614] Browser LOG     [ChromeTransport] chromePort disconnected
+[01:21:04.432] Browser ERROR   [ticker] {}
+[01:21:04.433] Browser ERROR   [ticker] {}
+[01:22:04.431] Browser ERROR   [ticker] {}
+[01:22:04.432] Browser ERROR   [ticker] {}
+[01:23:04.432] Browser ERROR   [ticker] {}
+[01:23:04.432] Browser ERROR   [ticker] {}
+[01:24:04.431] Browser ERROR   [ticker] {}
+[01:24:04.432] Browser ERROR   [ticker] {}
+[01:25:04.432] Browser ERROR   [ticker] {}
+[01:25:04.434] Browser ERROR   [ticker] {}
+[01:26:04.432] Browser ERROR   [ticker] {}
+[01:26:04.434] Browser ERROR   [ticker] {}
+[01:27:04.431] Browser ERROR   [ticker] {}
+[01:27:04.431] Browser ERROR   [ticker] {}
+[01:28:04.432] Browser ERROR   [ticker] {}
+[01:28:04.433] Browser ERROR   [ticker] {}
+[01:29:04.431] Browser ERROR   [ticker] {}
+[01:29:04.431] Browser ERROR   [ticker] {}
+[01:30:04.431] Browser ERROR   [ticker] {}
+[01:30:04.432] Browser ERROR   [ticker] {}
+[01:31:04.431] Browser ERROR   [ticker] {}
+[01:31:04.432] Browser ERROR   [ticker] {}
+[01:32:04.431] Browser ERROR   [ticker] {}
+[01:32:04.433] Browser ERROR   [ticker] {}
+[01:33:04.435] Browser ERROR   [ticker] {}
+[01:33:04.436] Browser ERROR   [ticker] {}
+[01:34:04.431] Browser ERROR   [ticker] {}
+[01:34:04.432] Browser ERROR   [ticker] {}
+[01:35:04.431] Browser ERROR   [ticker] {}
+[01:35:04.431] Browser ERROR   [ticker] {}
+[01:36:04.432] Browser ERROR   [ticker] {}
+[01:36:04.432] Browser ERROR   [ticker] {}
+[01:37:04.432] Browser ERROR   [ticker] {}
+[01:37:04.432] Browser ERROR   [ticker] {}
+[01:38:04.431] Browser ERROR   [ticker] {}
+[01:38:04.432] Browser ERROR   [ticker] {}
+[01:39:04.431] Browser ERROR   [ticker] {}
+[01:39:04.431] Browser ERROR   [ticker] {}
+[01:40:04.451] Browser ERROR   [ticker] {}
+[01:40:04.456] Browser ERROR   [ticker] {}
+[01:41:04.432] Browser ERROR   [ticker] {}
+[01:41:04.433] Browser ERROR   [ticker] {}
+[01:42:04.501] Browser ERROR   [ticker] {}
+[01:42:04.502] Browser ERROR   [ticker] {}
+[01:43:04.432] Browser ERROR   [ticker] {}
+[01:43:04.432] Browser ERROR   [ticker] {}

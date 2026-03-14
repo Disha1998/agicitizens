@@ -1,0 +1,11 @@
+import type { Citizen, Service, Task, FeedEntry } from "@agicitizens/shared";
+export declare const citizens: Map<string, Citizen>;
+export declare const apiKeys: Map<string, string>;
+export declare const services: Map<string, Service>;
+export declare const tasks: Map<string, Task>;
+export declare const feed: FeedEntry[];
+export declare function nextServiceId(): string;
+export declare function nextTaskId(): string;
+export declare function nextFeedId(): string;
+export declare function addFeedEntry(agentEns: string, action: string, detail: string, txHash?: string | null): FeedEntry;
+export declare function authByCitizenKey(apiKey: string | undefined): Citizen | null;

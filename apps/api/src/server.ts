@@ -1,3 +1,12 @@
+import dotenv from "dotenv";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// Load .env from monorepo root (works regardless of cwd)
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+dotenv.config(); // also try cwd/.env as fallback
+
 import express from "express";
 import cors from "cors";
 

@@ -55,22 +55,36 @@ export function getPlatformWallet(): Promise<PlatformWallet> {
 }
 
 async function initPlatformWallet(): Promise<PlatformWallet> {
+  console.log("[platform-wallet] Initializing platform treasury wallet...");
   if (!process.env.CDP_API_KEY_ID || !process.env.CDP_API_KEY_SECRET) {
-    console.warn("[platform-wallet] CDP keys not set — using mock wallet");
+    console.warn("[platform-wallet] CDP_API_KEY_ID or CDP_API_KEY_SECRET not set — using mock wallet");
     return createMockWallet();
   }
-
   try {
+    console.log("[platform-wallet] Connecting to CDP on", process.env.NETWORK_ID || "base-sepolia", "...");
     const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
 
-    const provider = await CdpEvmWalletProvider.configureWithWallet({
+    const walletConfig: any = {
       networkId: process.env.NETWORK_ID || "base-sepolia",
       apiKeyId: process.env.CDP_API_KEY_ID,
       apiKeySecret: process.env.CDP_API_KEY_SECRET,
-    });
+      walletSecret: process.env.CDP_WALLET_SECRET,
+    };
+
+    // Reuse existing wallet if address is saved
+    if (process.env.PLATFORM_WALLET_ADDRESS) {
+      walletConfig.address = process.env.PLATFORM_WALLET_ADDRESS;
+      console.log(`[platform-wallet] Reusing saved wallet: ${process.env.PLATFORM_WALLET_ADDRESS}`);
+    }
+
+    const provider = await CdpEvmWalletProvider.configureWithWallet(walletConfig);
 
     const address = provider.getAddress();
-    console.log(`[platform-wallet] CDP wallet ready: ${address}`);
+    console.log(`[platform-wallet] CDP treasury wallet ready: ${address}`);
+    if (!process.env.PLATFORM_WALLET_ADDRESS) {
+      console.log(`[platform-wallet] ⚠ Add PLATFORM_WALLET_ADDRESS=${address} to .env to persist this wallet across restarts`);
+      console.log(`[platform-wallet] Fund this address with ETH (gas) + USDC on Base Sepolia`);
+    }
 
     return {
       address,
@@ -101,6 +115,7 @@ export async function fundAgent(
   toAddress: string,
   amountUsdc: number,
 ): Promise<string> {
+  console.log(`[platform-wallet] Sending ${amountUsdc} USDC to ${toAddress}...`);
   const wallet = await getPlatformWallet();
 
   const data = encodeFunctionData({
@@ -109,12 +124,35 @@ export async function fundAgent(
     args: [toAddress as `0x${string}`, BigInt(Math.round(amountUsdc * 1_000_000))],
   });
 
+  console.log(`[platform-wallet] Submitting USDC transfer tx (contract: ${USDC_ADDRESS})...`);
   const txHash = await wallet.sendTransaction({
     to: USDC_ADDRESS,
     data,
   });
 
-  console.log(`[platform-wallet] Funded ${toAddress} with ${amountUsdc} USDC  tx=${txHash}`);
+  console.log(`[platform-wallet] Funded ${toAddress} with ${amountUsdc} USDC`);
+  console.log(`[platform-wallet] tx: ${txHash}`);
+  return txHash;
+}
+
+/**
+ * Send ETH (for gas) from treasury to an agent wallet.
+ * Returns the real tx hash.
+ */
+export async function fundAgentEth(
+  toAddress: string,
+  amountEth: number,
+): Promise<string> {
+  console.log(`[platform-wallet] Sending ${amountEth} ETH to ${toAddress} (gas funding)...`);
+  const wallet = await getPlatformWallet();
+
+  const txHash = await wallet.sendTransaction({
+    to: toAddress as `0x${string}`,
+    value: BigInt(Math.round(amountEth * 1e18)),
+  });
+
+  console.log(`[platform-wallet] Sent ${amountEth} ETH to ${toAddress}`);
+  console.log(`[platform-wallet] tx: ${txHash}`);
   return txHash;
 }
 

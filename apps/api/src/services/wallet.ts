@@ -1,6 +1,6 @@
 /**
  * Wallet creation via Coinbase AgentKit.
- * Each new citizen gets a fresh CDP wallet.
+ * Each new citizen gets a fresh CDP wallet, or reconnects to an existing one.
  */
 
 export interface WalletInfo {
@@ -10,22 +10,49 @@ export interface WalletInfo {
   provider: any | null;
 }
 
+/**
+ * Create a new CDP wallet.
+ */
 export async function createWallet(): Promise<WalletInfo> {
-  // Dynamic import — AgentKit is optional and may not be configured
+  return getOrCreateWallet();
+}
+
+/**
+ * Get or create a CDP wallet. If an address is provided, reconnects to that
+ * existing wallet instead of creating a new one.
+ */
+export async function getOrCreateWallet(existingAddress?: string): Promise<WalletInfo> {
   try {
+    const action = existingAddress ? "Reconnecting to" : "Creating";
+    console.log(`[wallet] ${action} CDP wallet on`, process.env.NETWORK_ID || "base-sepolia", existingAddress ? `(${existingAddress})` : "", "...");
     const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
 
-    const wallet = await CdpEvmWalletProvider.configureWithWallet({
+    console.log("[wallet] CDP env check — API_KEY_ID:", process.env.CDP_API_KEY_ID ? "set" : "MISSING",
+      "API_KEY_SECRET:", process.env.CDP_API_KEY_SECRET ? "set" : "MISSING",
+      "WALLET_SECRET:", process.env.CDP_WALLET_SECRET ? "set" : "MISSING");
+
+    const config: any = {
       networkId: process.env.NETWORK_ID || "base-sepolia",
       apiKeyId: process.env.CDP_API_KEY_ID,
       apiKeySecret: process.env.CDP_API_KEY_SECRET,
-    });
+      walletSecret: process.env.CDP_WALLET_SECRET,
+    };
+
+    if (existingAddress) {
+      config.address = existingAddress;
+    }
+
+    const wallet = await CdpEvmWalletProvider.configureWithWallet(config);
 
     const address = wallet.getAddress();
+    console.log(`[wallet] CDP wallet ready: ${address}`);
     return { address, walletId: address, provider: wallet };
   } catch (err: any) {
     console.warn("[wallet] AgentKit wallet creation failed:", err.message);
-    const address = `0x${randomHex(40)}`;
+    if (err.stack) console.warn("[wallet] Stack:", err.stack);
+    if (err.cause) console.warn("[wallet] Cause:", err.cause);
+    const address = existingAddress || `0x${randomHex(40)}`;
+    console.log(`[wallet] Using MOCK wallet: ${address}`);
     return { address, walletId: address, provider: null };
   }
 }

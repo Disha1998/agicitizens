@@ -1,20 +1,32 @@
-import { createPublicClient, http } from "viem";
+import {
+  createPublicClient,
+  createWalletClient,
+  http,
+  type Account,
+} from "viem";
+import { privateKeyToAccount } from "viem/accounts";
 import { mainnet, sepolia } from "viem/chains";
 import { addEnsContracts } from "@ensdomains/ensjs";
-import { getTextRecord as ensGetTextRecord } from "@ensdomains/ensjs/public";
+import { getTextRecord as ensGetTextRecord, getOwner } from "@ensdomains/ensjs/public";
+import { createSubname } from "@ensdomains/ensjs/wallet";
+import { setRecords } from "@ensdomains/ensjs/wallet";
 import { getEnsNetwork } from "@agicitizens/shared";
-import { getPlatformWallet } from "./platform-wallet.js";
 
 /**
- * ENS identity layer — runs on Ethereum (not Base).
+ * ENS identity layer — runs on Ethereum Sepolia (not Base).
  *
- * Mainnet: ENS on Ethereum mainnet (chain 1)
- * Testnet: ENS on Sepolia (chain 11155111)
+ * Requires:
+ *   ENS_OWNER_PRIVATE_KEY — private key of the account that owns agicitizens.eth on Sepolia
+ *   (Fund this account with Sepolia ETH for gas)
  *
- * X402 payments run separately on Base / Base Sepolia.
+ * Pre-requisite: register agicitizens.eth on Sepolia ENS via app.ens.domains
  */
 
 const ensNetwork = getEnsNetwork();
+
+// Sepolia ENS contract addresses (from ensjs)
+const SEPOLIA_PUBLIC_RESOLVER =
+  "0xE99638b40E4Fff0129D56f03b55b6bbC4BBE49b5" as const;
 
 // Map network ID to viem chain + ENS contracts
 const viemChains: Record<string, any> = {
@@ -24,7 +36,9 @@ const viemChains: Record<string, any> = {
 
 const chain = viemChains[ensNetwork.id];
 
-console.log(`[ens] Identity chain: ${ensNetwork.name} (${ensNetwork.chainId})`);
+console.log(
+  `[ens] Identity chain: ${ensNetwork.name} (${ensNetwork.chainId})`,
+);
 
 function getPublicClient() {
   const transport = http(ensNetwork.rpcUrl);
@@ -32,42 +46,132 @@ function getPublicClient() {
 }
 
 /**
- * Register a subdomain under agicitizens.eth.
- * e.g. registerSubdomain("cryptoresearch", "0x...") → cryptoresearch.agicitizens.eth
+ * Create a viem wallet client for ENS operations on Sepolia.
+ * Uses ENS_OWNER_PRIVATE_KEY — the account that owns agicitizens.eth.
  */
-export async function registerSubdomain(
-  name: string,
-  _ownerAddress: string
-): Promise<{ ensName: string; txHash: string }> {
-  const ensName = `${name}.${ensNetwork.identityDomain}`;
+function getEnsWalletClient() {
+  const pk = process.env.ENS_OWNER_PRIVATE_KEY;
+  if (!pk) return null;
 
-  const wallet = await getPlatformWallet();
-  const viemAccount = await wallet.getViemAccount();
+  const account = privateKeyToAccount(pk as `0x${string}`);
+  const transport = http(ensNetwork.rpcUrl);
+  return createWalletClient({ account, chain, transport });
+}
 
-  if (!viemAccount) {
-    return mockRegister(ensName);
-  }
-
-  // When real ENS domain is owned, use ensjs createSubname here
-  return mockRegister(ensName);
+/** Get the ENS owner address (used as subname owner so we can set text records). */
+function getEnsOwnerAddress(): `0x${string}` | null {
+  const pk = process.env.ENS_OWNER_PRIVATE_KEY;
+  if (!pk) return null;
+  return privateKeyToAccount(pk as `0x${string}`).address;
 }
 
 /**
- * Set text records on an ENS name via the resolver.
+ * Check if a subname already exists on-chain.
+ * Returns the owner address if it exists, null otherwise.
+ */
+export async function subnameExists(
+  ensName: string,
+): Promise<string | null> {
+  try {
+    const client = getPublicClient();
+    const result = await getOwner(client as any, { name: ensName, contract: "registry" });
+    if (result?.owner && result.owner !== "0x0000000000000000000000000000000000000000") {
+      return result.owner;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Register a subdomain under agicitizens.eth.
+ * e.g. registerSubdomain("cryptoresearch", "0x...") → cryptoresearch.agicitizens.eth
+ *
+ * Skips if the subname already exists on-chain.
+ * Uses ensjs createSubname on the ENS registry (Sepolia L1).
+ */
+export async function registerSubdomain(
+  name: string,
+  _ownerAddress: string,
+): Promise<{ ensName: string; txHash: string }> {
+  const ensName = `${name}.${ensNetwork.identityDomain}`;
+
+  // Check if subname already exists on-chain
+  const existingOwner = await subnameExists(ensName);
+  if (existingOwner) {
+    console.log(`[ens] ${ensName} already exists (owner: ${existingOwner}), skipping creation`);
+    return { ensName, txHash: "0x_already_registered" };
+  }
+
+  const walletClient = getEnsWalletClient();
+  if (!walletClient) {
+    console.warn(
+      "[ens] ENS_OWNER_PRIVATE_KEY not set — falling back to mock",
+    );
+    return mockRegister(ensName);
+  }
+
+  // Use the ENS owner as subname owner so we can set text records on it.
+  // The agent's Base Sepolia wallet is stored as a text record (agc.wallet).
+  const ensOwner = getEnsOwnerAddress();
+  if (!ensOwner) {
+    return mockRegister(ensName);
+  }
+
+  try {
+    console.log(`[ens] Creating subname ${ensName} on Sepolia ENS...`);
+    const txHash = await createSubname(walletClient as any, {
+      name: ensName,
+      owner: ensOwner,
+      contract: "registry",
+      resolverAddress: SEPOLIA_PUBLIC_RESOLVER,
+    });
+
+    console.log(`[ens] Registered ${ensName} on Sepolia ENS`);
+    console.log(`[ens]   tx: ${txHash}`);
+    return { ensName, txHash };
+  } catch (err: any) {
+    console.warn(`[ens] Failed to register ${ensName}:`, err.message);
+    return mockRegister(ensName);
+  }
+}
+
+/**
+ * Set text records on an ENS name via the public resolver.
  */
 export async function setTextRecords(
   ensName: string,
-  records: Record<string, string>
+  records: Record<string, string>,
 ): Promise<string> {
-  const wallet = await getPlatformWallet();
-  const viemAccount = await wallet.getViemAccount();
-
-  if (!viemAccount) {
+  const walletClient = getEnsWalletClient();
+  if (!walletClient) {
     return mockSetText(ensName, records);
   }
 
-  // When real ENS domain is owned, use ensjs setTextRecord here
-  return mockSetText(ensName, records);
+  try {
+    console.log(`[ens] Setting text records for ${ensName}...`);
+    const texts = Object.entries(records).map(([key, value]) => ({
+      key,
+      value,
+    }));
+
+    const txHash = await setRecords(walletClient as any, {
+      name: ensName,
+      resolverAddress: SEPOLIA_PUBLIC_RESOLVER,
+      texts,
+    });
+
+    console.log(`[ens] Set ${texts.length} text record(s) for ${ensName}`);
+    console.log(`[ens]   tx: ${txHash}`);
+    return txHash;
+  } catch (err: any) {
+    console.warn(
+      `[ens] Failed to set text records for ${ensName}:`,
+      err.message,
+    );
+    return mockSetText(ensName, records);
+  }
 }
 
 /**
@@ -75,7 +179,7 @@ export async function setTextRecords(
  */
 export async function getTextRecord(
   ensName: string,
-  key: string
+  key: string,
 ): Promise<string | null> {
   try {
     const client = getPublicClient();
@@ -97,7 +201,10 @@ function mockRegister(ensName: string): { ensName: string; txHash: string } {
   return { ensName, txHash };
 }
 
-function mockSetText(ensName: string, records: Record<string, string>): string {
+function mockSetText(
+  ensName: string,
+  records: Record<string, string>,
+): string {
   const txHash = `0x${randomHex(64)}`;
   console.log(`[ens] MOCK set text records for ${ensName}:`, records);
   return txHash;

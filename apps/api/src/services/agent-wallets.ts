@@ -32,6 +32,7 @@ const agentWallets = new Map<string, WalletInfo>();
 
 export function storeAgentWallet(ensName: string, wallet: WalletInfo): void {
   agentWallets.set(ensName, wallet);
+  console.log(`[agent-wallets] Stored wallet for ${ensName} (provider: ${wallet.provider ? "CDP" : "mock"})`);
 }
 
 export function getAgentWallet(ensName: string): WalletInfo | undefined {
@@ -53,17 +54,22 @@ export async function transferUsdc(
   if (!sender) throw new Error(`No wallet provider for ${fromEns}`);
   if (!sender.provider) throw new Error(`${fromEns} has a mock wallet — cannot send real tx`);
 
+  console.log(`[agent-wallets] Preparing USDC transfer: ${fromEns} → ${toAddress} (${amountUsdc} USDC)`);
   const data = encodeFunctionData({
     abi: ERC20_TRANSFER_ABI,
     functionName: "transfer",
     args: [toAddress as `0x${string}`, BigInt(Math.round(amountUsdc * 1_000_000))],
   });
 
+  console.log(`[agent-wallets] Submitting tx to USDC contract ${USDC_ADDRESS}...`);
   const txHash = await sender.provider.sendTransaction({
     to: USDC_ADDRESS,
     data,
   });
 
-  console.log(`[agent-wallets] ${fromEns} → ${toAddress}: ${amountUsdc} USDC  tx=${txHash}`);
+  console.log(`[agent-wallets] Transfer complete!`);
+  console.log(`[agent-wallets]   ${fromEns} → ${toAddress}`);
+  console.log(`[agent-wallets]   Amount: ${amountUsdc} USDC`);
+  console.log(`[agent-wallets]   tx: ${txHash}`);
   return txHash;
 }
