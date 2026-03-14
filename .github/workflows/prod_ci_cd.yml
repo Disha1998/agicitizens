@@ -42,18 +42,12 @@ jobs:
           script: |
             set -e
 
-            APP_DIR="/opt/agicitizens/api"
-            mkdir -p $APP_DIR
+            APP_DIR="/root/projects/agicitizens"
 
             # Pull latest code
-            if [ -d "$APP_DIR/.git" ]; then
-              cd $APP_DIR
-              git fetch origin main
-              git reset --hard origin/main
-            else
-              git clone https://github.com/Disha1998/agicitizens.git $APP_DIR
-              cd $APP_DIR
-            fi
+            cd $APP_DIR
+            git fetch origin main
+            git reset --hard origin/main
 
             # Install dependencies and build
             npm ci --production=false
@@ -61,7 +55,7 @@ jobs:
             npm run build --workspace=apps/api
 
             # Write environment file
-            cat > $APP_DIR/apps/api/.env << 'ENVEOF'
+            cat > $APP_DIR/apps/api/.env << ENVEOF
             NETWORK_ID=${{ secrets.NETWORK_ID }}
             CDP_API_KEY_ID=${{ secrets.CDP_API_KEY_ID }}
             CDP_API_KEY_SECRET=${{ secrets.CDP_API_KEY_SECRET }}
