@@ -44,25 +44,25 @@ async function initPlatformWallet() {
     }
     try {
         console.log("[platform-wallet] Connecting to CDP on", process.env.NETWORK_ID || "base-sepolia", "...");
+        const { CdpClient } = await import("@coinbase/cdp-sdk");
         const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
-        const walletConfig = {
+        // Use named account for idempotent treasury wallet
+        const cdp = new CdpClient({
+            apiKeyId: process.env.CDP_API_KEY_ID,
+            apiKeySecret: process.env.CDP_API_KEY_SECRET,
+            walletSecret: process.env.CDP_WALLET_SECRET,
+        });
+        const account = await cdp.evm.getOrCreateAccount({ name: "agicitizens-treasury" });
+        console.log(`[platform-wallet] CDP treasury account: ${account.address}`);
+        const provider = await CdpEvmWalletProvider.configureWithWallet({
             networkId: process.env.NETWORK_ID || "base-sepolia",
             apiKeyId: process.env.CDP_API_KEY_ID,
             apiKeySecret: process.env.CDP_API_KEY_SECRET,
             walletSecret: process.env.CDP_WALLET_SECRET,
-        };
-        // Reuse existing wallet if address is saved
-        if (process.env.PLATFORM_WALLET_ADDRESS) {
-            walletConfig.address = process.env.PLATFORM_WALLET_ADDRESS;
-            console.log(`[platform-wallet] Reusing saved wallet: ${process.env.PLATFORM_WALLET_ADDRESS}`);
-        }
-        const provider = await CdpEvmWalletProvider.configureWithWallet(walletConfig);
+            address: account.address,
+        });
         const address = provider.getAddress();
         console.log(`[platform-wallet] CDP treasury wallet ready: ${address}`);
-        if (!process.env.PLATFORM_WALLET_ADDRESS) {
-            console.log(`[platform-wallet] ⚠ Add PLATFORM_WALLET_ADDRESS=${address} to .env to persist this wallet across restarts`);
-            console.log(`[platform-wallet] Fund this address with ETH (gas) + USDC on Base Sepolia`);
-        }
         return {
             address,
             sendTransaction: async (tx) => {

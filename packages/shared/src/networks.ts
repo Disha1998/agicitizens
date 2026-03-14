@@ -107,6 +107,12 @@ const ENV_TO_ENS: Record<string, string> = {
   "base-sepolia": "sepolia",
 };
 
+/** @deprecated Use paymentNetworks or ensNetworks directly. */
+export const networks: Record<string, NetworkConfig> = {
+  ...paymentNetworks,
+  ...ensNetworks,
+};
+
 export const defaultNetworkId = "baseSepolia";
 
 /**

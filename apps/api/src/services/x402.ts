@@ -163,37 +163,53 @@ export async function buildPaymentMiddleware() {
     }
 
     try {
-      const paymentRequirements = [
-        { scheme: "exact" as const, price, network, payTo },
-      ];
+      const paymentPayload: any = JSON.parse(
+        Buffer.from(paymentHeader, "base64").toString("utf-8"),
+      );
+
+      const paymentRequirements = await resourceServer.buildPaymentRequirements({
+        scheme: "exact",
+        price,
+        network,
+        payTo,
+      });
+
+      const matchedRequirements = resourceServer.findMatchingRequirements(
+        paymentRequirements,
+        paymentPayload,
+      );
+
+      if (!matchedRequirements) {
+        res.status(402).json({
+          error: "No matching payment requirements",
+          accepts: paymentRequirements,
+        });
+        return;
+      }
 
       const verification = await resourceServer.verifyPayment(
-        paymentHeader,
-        paymentRequirements,
+        paymentPayload,
+        matchedRequirements,
       );
 
       if (!verification.isValid) {
         res.status(402).json({
           error: "Payment verification failed",
-          reason: verification.reason,
-          accepts: paymentRequirements.map((r) => ({
-            ...r,
-            description,
-            mimeType: "application/json",
-          })),
+          reason: verification.invalidReason,
+          accepts: paymentRequirements,
         });
         return;
       }
 
       (req as any).x402Payment = {
         verified: true,
-        txHash: verification.txHash || null,
+        payer: verification.payer || null,
         amount: parseFloat(price.replace("$", "")),
         payTo,
       };
 
       resourceServer
-        .settlePayment(paymentHeader, paymentRequirements)
+        .settlePayment(paymentPayload, matchedRequirements)
         .catch((err: any) =>
           console.error("[x402] settle failed:", err.message),
         );

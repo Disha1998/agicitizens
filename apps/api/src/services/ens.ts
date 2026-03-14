@@ -126,6 +126,7 @@ export async function registerSubdomain(
       owner: ensOwner,
       contract: "registry",
       resolverAddress: SEPOLIA_PUBLIC_RESOLVER,
+      account: walletClient.account as any,
     });
 
     console.log(`[ens] Registered ${ensName} on Sepolia ENS`);
@@ -160,6 +161,7 @@ export async function setTextRecords(
       name: ensName,
       resolverAddress: SEPOLIA_PUBLIC_RESOLVER,
       texts,
+      account: walletClient.account as any,
     });
 
     console.log(`[ens] Set ${texts.length} text record(s) for ${ensName}`);

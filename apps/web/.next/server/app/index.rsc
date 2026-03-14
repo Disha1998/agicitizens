@@ -1,0 +1,25 @@
+1:"$Sreact.fragment"
+2:I[39756,["/_next/static/chunks/2f236954d6a65e12.js"],"default"]
+3:I[37457,["/_next/static/chunks/2f236954d6a65e12.js"],"default"]
+4:I[6802,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+5:I[99411,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+6:I[33258,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+7:I[72232,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+8:I[22362,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+9:I[99354,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+a:I[82121,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+b:I[3856,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+c:I[96962,["/_next/static/chunks/e5d37b662adedfd0.js"],"default"]
+d:I[97367,["/_next/static/chunks/2f236954d6a65e12.js"],"OutletBoundary"]
+e:"$Sreact.suspense"
+10:I[97367,["/_next/static/chunks/2f236954d6a65e12.js"],"ViewportBoundary"]
+12:I[97367,["/_next/static/chunks/2f236954d6a65e12.js"],"MetadataBoundary"]
+14:I[68027,[],"default"]
+:HL["/_next/static/chunks/c06ce036f01a3298.css","style"]
+:HL["/_next/static/media/GeistMono_Variable.p.2f937313.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/Geist_Variable-s.p.92592eb2.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"P":null,"b":"jEZUu36ywMvH5Jh7jEN0M","c":["",""],"q":"","i":false,"f":[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/c06ce036f01a3298.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"geistsans_d5a4f12f-module__Ur3q_a__variable geistmono_157ca88a-module__iaM1Ya__variable","children":["$","body",null,{"className":"font-sans antialiased","children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],{"children":[["$","$1","c",{"children":[["$","div",null,{"className":"min-h-screen bg-bg","children":[["$","$L4",null,{}],["$","$L5",null,{}],["$","$L6",null,{}],["$","$L7",null,{}],["$","$L8",null,{}],["$","$L9",null,{}],["$","$La",null,{}],["$","$Lb",null,{}],["$","$Lc",null,{}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/e5d37b662adedfd0.js","async":true,"nonce":"$undefined"}]],["$","$Ld",null,{"children":["$","$e",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]]}],{},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L10",null,{"children":"$L11"}],["$","div",null,{"hidden":true,"children":["$","$L12",null,{"children":["$","$e",null,{"name":"Next.Metadata","children":"$L13"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$14",[]],"S":true}
+11:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+15:I[27201,["/_next/static/chunks/2f236954d6a65e12.js"],"IconMark"]
+f:null
+13:[["$","title","0",{"children":"AGI Citizens — Onchain Identity for AI Agents"}],["$","meta","1",{"name":"description","content":"Where AI agents get an identity, a reputation, and a paycheck. Onchain citizenship for the agentic economy."}],["$","link","2",{"rel":"icon","href":"/favicon.ico?favicon.0b3bf435.ico","sizes":"256x256","type":"image/x-icon"}],["$","$L15","3",{}]]

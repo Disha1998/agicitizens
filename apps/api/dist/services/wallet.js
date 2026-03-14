@@ -1,33 +1,60 @@
 /**
- * Wallet creation via Coinbase AgentKit.
- * Each new citizen gets a fresh CDP wallet.
+ * Wallet creation via CDP SDK.
+ *
+ * Uses cdp.evm.getOrCreateAccount({ name }) for idempotent wallet management.
+ * Name is the key — same name always returns the same wallet/address.
+ * Then wraps in CdpEvmWalletProvider for signing transactions.
  */
-export async function createWallet() {
-    // Dynamic import — AgentKit is optional and may not be configured
+/**
+ * Get or create a CDP wallet by name.
+ * - First call with a name: creates the account
+ * - Subsequent calls with same name: returns the same account (same address)
+ *
+ * Then wraps in CdpEvmWalletProvider for sendTransaction support.
+ */
+export async function getOrCreateWallet(agentName) {
+    const walletName = `agicitizens-${agentName}`;
     try {
-        console.log("[wallet] Creating CDP wallet on", process.env.NETWORK_ID || "base-sepolia", "...");
+        console.log(`[wallet] getOrCreateAccount("${walletName}") on`, process.env.NETWORK_ID || "base-sepolia", "...");
+        const { CdpClient } = await import("@coinbase/cdp-sdk");
         const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
-        console.log("[wallet] CDP env check — API_KEY_ID:", process.env.CDP_API_KEY_ID ? "set" : "MISSING", "API_KEY_SECRET:", process.env.CDP_API_KEY_SECRET ? "set" : "MISSING", "WALLET_SECRET:", process.env.CDP_WALLET_SECRET ? "set" : "MISSING");
-        const wallet = await CdpEvmWalletProvider.configureWithWallet({
-            networkId: process.env.NETWORK_ID || "base-sepolia",
+        // 1. Get or create the account by name (idempotent)
+        const cdp = new CdpClient({
             apiKeyId: process.env.CDP_API_KEY_ID,
             apiKeySecret: process.env.CDP_API_KEY_SECRET,
             walletSecret: process.env.CDP_WALLET_SECRET,
         });
-        const address = wallet.getAddress();
-        console.log(`[wallet] CDP wallet created: ${address}`);
-        return { address, walletId: address, provider: wallet };
+        const account = await cdp.evm.getOrCreateAccount({ name: walletName });
+        const address = account.address;
+        console.log(`[wallet] CDP account "${walletName}" → ${address}`);
+        // 2. Create a wallet provider for signing (uses the same address)
+        const provider = await CdpEvmWalletProvider.configureWithWallet({
+            networkId: process.env.NETWORK_ID || "base-sepolia",
+            apiKeyId: process.env.CDP_API_KEY_ID,
+            apiKeySecret: process.env.CDP_API_KEY_SECRET,
+            walletSecret: process.env.CDP_WALLET_SECRET,
+            address: address,
+        });
+        console.log(`[wallet] CDP wallet ready: ${provider.getAddress()}`);
+        return { address, walletId: walletName, provider };
     }
     catch (err) {
-        console.warn("[wallet] AgentKit wallet creation failed:", err.message);
+        console.warn("[wallet] CDP wallet failed:", err.message);
         if (err.stack)
             console.warn("[wallet] Stack:", err.stack);
-        if (err.cause)
-            console.warn("[wallet] Cause:", err.cause);
         const address = `0x${randomHex(40)}`;
         console.log(`[wallet] Using MOCK wallet: ${address}`);
-        return { address, walletId: address, provider: null };
+        return { address, walletId: walletName, provider: null };
     }
+}
+/**
+ * @deprecated Use getOrCreateWallet(name) instead.
+ * Creates a new anonymous wallet (no name = no persistence).
+ */
+export async function createWallet() {
+    // Fallback: create with a random name (not idempotent)
+    const randomName = `anon-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    return getOrCreateWallet(randomName);
 }
 function randomHex(len) {
     const chars = "0123456789abcdef";
