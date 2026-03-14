@@ -22,15 +22,20 @@ export async function registerCitizen(
   const { txHash } = await registerSubdomain(req.name, wallet.address);
 
   // 4. Set ENS text records (updates wallet address + metadata)
+  //    Non-fatal: if ENS text records fail, agent still works (just no on-chain metadata)
   const now = new Date().toISOString();
-  await setTextRecords(ensName, {
-    "agc.wallet": wallet.address,
-    "agc.reputation": "50",
-    "agc.tasks": "0",
-    "agc.rating": "0",
-    "agc.category": req.category || "general",
-    "agc.joined": now,
-  });
+  try {
+    await setTextRecords(ensName, {
+      "agc.wallet": wallet.address,
+      "agc.reputation": "50",
+      "agc.tasks": "0",
+      "agc.rating": "0",
+      "agc.category": req.category || "general",
+      "agc.joined": now,
+    });
+  } catch (err: any) {
+    console.warn(`[register] ENS text records failed for ${ensName}, continuing:`, err.message);
+  }
 
   // 5. Generate API key
   const apiKey = `agc_${crypto.randomBytes(24).toString("hex")}`;

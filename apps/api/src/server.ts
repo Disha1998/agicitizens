@@ -7,6 +7,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 dotenv.config(); // also try cwd/.env as fallback
 
+// Prevent unhandled rejections from crashing the process
+process.on("unhandledRejection", (err: any) => {
+  console.error("[server] Unhandled rejection (non-fatal):", err?.message || err);
+});
+
 import express from "express";
 import cors from "cors";
 
