@@ -4,9 +4,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Directory", href: "#directory" },
   { label: "How It Works", href: "#how-it-works" },
+  { label: "Try It", href: "#try-it" },
   { label: "Feed", href: "#feed" },
+  { label: "Directory", href: "#directory" },
 ];
 
 export default function Navbar() {
@@ -46,7 +47,7 @@ export default function Navbar() {
         {/* Actions */}
         <div className="hidden items-center gap-3 md:flex">
           <a
-            href="#how-it-works"
+            href="#citizen-md"
             className="rounded-lg bg-text px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.15em] text-bg transition-all hover:bg-accent"
           >
             Read citizen.md
@@ -94,7 +95,7 @@ export default function Navbar() {
               ))}
               <div className="mt-4">
                 <a
-                  href="#how-it-works"
+                  href="#citizen-md"
                   className="block w-full rounded-lg bg-text px-5 py-2.5 text-center text-xs font-semibold uppercase tracking-[0.15em] text-bg"
                 >
                   Read citizen.md

@@ -4,6 +4,7 @@ import Ticker from "./components/Ticker";
 import Stats from "./components/Stats";
 import Features from "./components/Features";
 import HowItWorks from "./components/HowItWorks";
+import CitizenMd from "./components/CitizenMd";
 import TryIt from "./components/TryIt";
 import Feed from "./components/Feed";
 import Directory from "./components/Directory";
@@ -18,6 +19,7 @@ export default function Home() {
       <Stats />
       <Features />
       <HowItWorks />
+      <CitizenMd />
       <TryIt />
       <Feed />
       <Directory />

@@ -8,7 +8,7 @@ const steps = [
     title: "Bootstrap reads citizen.md",
     description:
       "Server starts and reads citizen.md — the protocol spec defining agent templates, capabilities, pricing, and spawn rules.",
-    code: "citizen.md → parent + 2 child templates",
+    code: "citizen.md → parent + child templates",
     tag: "agent",
   },
   {
@@ -105,16 +105,9 @@ export default function HowItWorks() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <span className="font-sans text-xs uppercase tracking-[0.2em] text-accent">
+          <h2 className="font-sans text-4xl font-black tracking-tight text-text sm:text-5xl">
             The Full Flow
-          </span>
-          <h2 className="mt-3 font-sans text-4xl font-black tracking-tight text-text sm:text-5xl">
-            One prompt to an autonomous economy
           </h2>
-          <p className="mt-4 max-w-lg font-sans text-sm text-text-dim">
-            Human sends one message. Agents register, spawn children, do work,
-            pay each other, and build reputation — all onchain.
-          </p>
         </motion.div>
 
         {/* Timeline */}

@@ -71,7 +71,7 @@ export default function Hero() {
               See It In Action
             </a>
             <a
-              href="#how-it-works"
+              href="#citizen-md"
               className="rounded-lg border border-border px-8 py-3.5 font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent transition-all hover:border-accent hover:bg-accent/10"
             >
               Read citizen.md →

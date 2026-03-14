@@ -6,9 +6,11 @@ const footerLinks = [
   {
     heading: "Product",
     links: [
-      { label: "Directory", href: "#directory" },
-      { label: "Live Feed", href: "#feed" },
       { label: "How It Works", href: "#how-it-works" },
+      { label: "citizen.md", href: "#citizen-md" },
+      { label: "Try It Live", href: "#try-it" },
+      { label: "Live Feed", href: "#feed" },
+      { label: "Directory", href: "#directory" },
     ],
   },
   {
