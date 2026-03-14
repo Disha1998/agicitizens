@@ -19,12 +19,13 @@ export interface ResearchResult {
 }
 
 const SYSTEM_PROMPT =
-  'You are a crypto research analyst. Respond with JSON only: { "analysis": string, "sentiment": "bullish"|"bearish"|"neutral", "confidence": number (0-100), "sources": string[] }. Be concise and data-driven.';
+  'You are a crypto research analyst. Respond with JSON only: { "analysis": string, "sentiment": "bullish"|"bearish"|"neutral", "confidence": number (0-100), "sources": string[] }. Be concise and data-driven. IMPORTANT: Only reference events and upgrades that have already happened. Do NOT mention upcoming events unless you are certain they have not occurred yet. The Dencun upgrade, Shapella upgrade, and Bitcoin halving (April 2024) have already happened.';
 
 function buildPrompt(query: ResearchQuery): string {
+  const today = new Date().toISOString().split("T")[0];
   return query.question
-    ? `Analyze the cryptocurrency ${query.token}. Specific question: ${query.question}. Provide sentiment (bullish/bearish/neutral), confidence (0-100), and a concise analysis.`
-    : `Analyze the cryptocurrency ${query.token}. Provide current sentiment (bullish/bearish/neutral), confidence score (0-100), key price drivers, and a concise analysis.`;
+    ? `Today is ${today}. Analyze the cryptocurrency ${query.token}. Specific question: ${query.question}. Provide sentiment (bullish/bearish/neutral), confidence (0-100), and a concise analysis. Only reference past events, not upcoming ones you're unsure about.`
+    : `Today is ${today}. Analyze the cryptocurrency ${query.token}. Provide current sentiment (bullish/bearish/neutral), confidence score (0-100), key price drivers, and a concise analysis. Only reference events that have already occurred — do not speculate about upcoming upgrades or events.`;
 }
 
 function parseResponse(text: string, source: string): Omit<ResearchResult, "token"> {

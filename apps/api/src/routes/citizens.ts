@@ -4,7 +4,7 @@ import { citizens } from "../services/store.js";
 const router = Router();
 
 /**
- * GET /api/v1/citizens
+ * GET /api/v1/citizensg
  * List all registered citizens.
  */
 router.get("/citizens", (_req, res) => {

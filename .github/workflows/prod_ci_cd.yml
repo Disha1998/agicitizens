@@ -62,7 +62,9 @@ jobs:
             CDP_WALLET_SECRET=${{ secrets.CDP_WALLET_SECRET }}
             ENS_OWNER_PRIVATE_KEY=${{ secrets.ENS_OWNER_PRIVATE_KEY }}
             ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+
             NODE_ENV=production
             PORT=3002
             ENVEOF
