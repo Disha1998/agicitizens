@@ -49,3 +49,58 @@
 [01:53:39.401] Server  LOG     ✓ Compiled in 26ms
 [01:53:43.950] Server  LOG     ✓ Compiled in 12ms
 [01:53:48.086] Server  LOG     ✓ Compiled in 9ms
+[02:54:07.038] Server  LOG     ✓ Compiled in 81ms
+[02:54:26.190] Server  LOG     ✓ Compiled in 10ms
+[03:42:06.423] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[03:42:06.594] Browser ERROR   [ticker] {}
+[03:42:06.594] Browser ERROR   [stats] {}
+[03:42:36.569] Browser ERROR   [ticker] {}
+[03:43:06.586] Browser ERROR   [ticker] {}
+[03:43:36.572] Browser ERROR   [ticker] {}
+[03:44:06.577] Browser ERROR   [ticker] {}
+[03:44:36.572] Browser ERROR   [ticker] {}
+[03:45:06.575] Browser ERROR   [ticker] {}
+[03:45:36.573] Browser ERROR   [ticker] {}
+[03:46:06.576] Browser ERROR   [ticker] {}
+[03:46:36.571] Browser ERROR   [ticker] {}
+[03:47:06.576] Browser ERROR   [ticker] {}
+[03:47:36.572] Browser ERROR   [ticker] {}
+[03:48:06.574] Browser ERROR   [ticker] {}
+[03:48:36.573] Browser ERROR   [ticker] {}
+[03:49:06.582] Browser ERROR   [ticker] {}
+[03:49:36.573] Browser ERROR   [ticker] {}
+[03:50:06.578] Browser ERROR   [ticker] {}
+[03:50:36.574] Browser ERROR   [ticker] {}
+[03:51:06.577] Browser ERROR   [ticker] {}
+[03:51:36.574] Browser ERROR   [ticker] {}
+[03:52:06.580] Browser ERROR   [ticker] {}
+[03:52:36.574] Browser ERROR   [ticker] {}
+[03:53:06.578] Browser ERROR   [ticker] {}
+[03:53:36.572] Browser ERROR   [ticker] {}
+[03:54:06.577] Browser ERROR   [ticker] {}
+[03:54:36.573] Browser ERROR   [ticker] {}
+[03:55:06.581] Browser ERROR   [ticker] {}
+[03:55:36.573] Browser ERROR   [ticker] {}
+[03:56:06.580] Browser ERROR   [ticker] {}
+[03:56:36.574] Browser ERROR   [ticker] {}
+[03:57:06.578] Browser ERROR   [ticker] {}
+[03:57:36.575] Browser ERROR   [ticker] {}
+[03:58:06.579] Browser ERROR   [ticker] {}
+[03:58:36.574] Browser ERROR   [ticker] {}
+[03:59:06.577] Browser ERROR   [ticker] {}
+[03:59:36.567] Browser ERROR   [ticker] {}
+[04:00:06.580] Browser ERROR   [ticker] {}
+[04:00:36.572] Browser ERROR   [ticker] {}
+[04:01:06.583] Browser ERROR   [ticker] {}
+[04:01:36.574] Browser ERROR   [ticker] {}
+[04:02:06.577] Browser ERROR   [ticker] {}
+[04:02:36.574] Browser ERROR   [ticker] {}
+[04:03:06.574] Browser ERROR   [ticker] {}
+[04:03:36.576] Browser ERROR   [ticker] {}
+[04:04:06.582] Browser ERROR   [ticker] {}
+[04:04:36.568] Browser ERROR   [ticker] {}
+[04:05:06.577] Browser ERROR   [ticker] {}
+[04:05:36.573] Browser ERROR   [ticker] {}
+[04:06:06.581] Browser ERROR   [ticker] {}
+[04:06:36.576] Browser ERROR   [ticker] {}
+[04:07:06.586] Browser ERROR   [ticker] {}

@@ -25,11 +25,11 @@ app.get("/health", (_req, res) => {
 
 // X402 payment middleware (server is a notary, not a bank)
 // All pricing resolved dynamically at request time:
-//   /register  → $1.00 → treasury
+//   /register  → $1.00 → treasury (CDP platform wallet)
 //   /research  → $0.01 → cryptoresearch agent wallet
 //   /swap      → $0.02 → defipro agent wallet
 //   /hire      → service price → target agent wallet
-if (process.env.ENS_OWNER_PRIVATE_KEY) {
+if (process.env.CDP_API_KEY_ID) {
   buildPaymentMiddleware()
     .then((middleware) => {
       app.use(middleware);

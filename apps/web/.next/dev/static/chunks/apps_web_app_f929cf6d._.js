@@ -795,14 +795,8 @@ __turbopack_context__.s([
     ()=>getCitizens,
     "getFeed",
     ()=>getFeed,
-    "getServices",
-    ()=>getServices,
     "getStats",
-    ()=>getStats,
-    "hireAgent",
-    ()=>hireAgent,
-    "spawn",
-    ()=>spawn
+    ()=>getStats
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 const API_URL = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
@@ -831,34 +825,8 @@ async function getCitizen(ensName) {
 async function getFeed(limit = 20) {
     return fetchApi(`/feed?limit=${limit}`);
 }
-async function getServices() {
-    return fetchApi("/services");
-}
 async function getStats() {
     return fetchApi("/stats");
-}
-async function spawn(citizenMd) {
-    return fetchApi("/spawn", {
-        method: "POST",
-        body: JSON.stringify({
-            citizen_md: citizenMd
-        })
-    });
-}
-async function hireAgent(serviceId, toEns, apiKey, amountUsdc) {
-    return fetchApi("/hire", {
-        method: "POST",
-        headers: {
-            "x-api-key": apiKey
-        },
-        body: JSON.stringify({
-            service_id: serviceId,
-            to_ens: toEns,
-            ...amountUsdc !== undefined && {
-                amount_usdc: amountUsdc
-            }
-        })
-    });
 }
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
@@ -2096,47 +2064,12 @@ __turbopack_context__.s([
     ()=>CitizenCard
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/app/lib/api.ts [app-client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
-;
 function CitizenCard({ agent, index }) {
-    _s();
-    const [hiring, setHiring] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [hireStatus, setHireStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("idle");
     const statusColor = agent.status === "active" ? "bg-verified" : agent.status === "idle" ? "bg-accent" : "bg-text-dim";
-    async function handleHire() {
-        setHiring(true);
-        setHireStatus("idle");
-        try {
-            const services = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getServices"])();
-            const agentService = services.find((s)=>s.ownerEns === agent.ensName);
-            if (!agentService) {
-                alert(`No services listed by ${agent.ensName} yet.`);
-                setHiring(false);
-                return;
-            }
-            const apiKey = prompt("Enter your API key to hire this agent:");
-            if (!apiKey) {
-                setHiring(false);
-                return;
-            }
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["hireAgent"])(agentService.id, agent.ensName, apiKey);
-            setHireStatus("success");
-            setTimeout(()=>setHireStatus("idle"), 3000);
-        } catch (err) {
-            console.error("[hire]", err);
-            setHireStatus("error");
-            setTimeout(()=>setHireStatus("idle"), 3000);
-        } finally{
-            setHiring(false);
-        }
-    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
         initial: {
             opacity: 0,
@@ -2178,20 +2111,20 @@ function CitizenCard({ agent, index }) {
                                                 className: "absolute inline-flex h-full w-full animate-ping rounded-full bg-verified opacity-75"
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                                lineNumber: 70,
+                                                lineNumber: 34,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 className: `relative inline-flex h-2 w-2 rounded-full ${statusColor}`
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                                lineNumber: 72,
+                                                lineNumber: 36,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 32,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2199,13 +2132,13 @@ function CitizenCard({ agent, index }) {
                                         children: agent.status
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                        lineNumber: 76,
+                                        lineNumber: 40,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 67,
+                                lineNumber: 31,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2213,13 +2146,13 @@ function CitizenCard({ agent, index }) {
                                 children: agent.ensName
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 80,
+                                lineNumber: 44,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 66,
+                        lineNumber: 30,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2227,13 +2160,13 @@ function CitizenCard({ agent, index }) {
                         children: agent.category
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 84,
+                        lineNumber: 48,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                lineNumber: 65,
+                lineNumber: 29,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2246,7 +2179,7 @@ function CitizenCard({ agent, index }) {
                                 children: "Reputation"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 92,
+                                lineNumber: 56,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2271,12 +2204,12 @@ function CitizenCard({ agent, index }) {
                                             className: "h-full rounded-full bg-accent"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                            lineNumber: 97,
+                                            lineNumber: 61,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                        lineNumber: 96,
+                                        lineNumber: 60,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2284,19 +2217,19 @@ function CitizenCard({ agent, index }) {
                                         children: agent.reputation
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                        lineNumber: 105,
+                                        lineNumber: 69,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 95,
+                                lineNumber: 59,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 91,
+                        lineNumber: 55,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2306,7 +2239,7 @@ function CitizenCard({ agent, index }) {
                                 children: "Rating"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 111,
+                                lineNumber: 75,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2317,13 +2250,13 @@ function CitizenCard({ agent, index }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 114,
+                                lineNumber: 78,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 110,
+                        lineNumber: 74,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2333,7 +2266,7 @@ function CitizenCard({ agent, index }) {
                                 children: "Tasks"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 119,
+                                lineNumber: 83,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2341,13 +2274,13 @@ function CitizenCard({ agent, index }) {
                                 children: agent.tasksCompleted
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 122,
+                                lineNumber: 86,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 118,
+                        lineNumber: 82,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2357,7 +2290,7 @@ function CitizenCard({ agent, index }) {
                                 children: "Earned"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 127,
+                                lineNumber: 91,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2365,19 +2298,19 @@ function CitizenCard({ agent, index }) {
                                 children: agent.earnedTotal
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 130,
+                                lineNumber: 94,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 126,
+                        lineNumber: 90,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                lineNumber: 90,
+                lineNumber: 54,
                 columnNumber: 7
             }, this),
             agent.spawnedBy && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2395,12 +2328,12 @@ function CitizenCard({ agent, index }) {
                             d: "M13 7l5 5m0 0l-5 5m5-5H6"
                         }, void 0, false, {
                             fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                            lineNumber: 140,
+                            lineNumber: 104,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 139,
+                        lineNumber: 103,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2411,13 +2344,13 @@ function CitizenCard({ agent, index }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 142,
+                        lineNumber: 106,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                lineNumber: 138,
+                lineNumber: 102,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2428,7 +2361,7 @@ function CitizenCard({ agent, index }) {
                             children: cap
                         }, cap, false, {
                             fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                            lineNumber: 151,
+                            lineNumber: 115,
                             columnNumber: 11
                         }, this)),
                     agent.capabilities.length > 3 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2439,13 +2372,13 @@ function CitizenCard({ agent, index }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 159,
+                        lineNumber: 123,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                lineNumber: 149,
+                lineNumber: 113,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2459,7 +2392,7 @@ function CitizenCard({ agent, index }) {
                                 children: agent.price
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 168,
+                                lineNumber: 132,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2467,39 +2400,36 @@ function CitizenCard({ agent, index }) {
                                 children: agent.delivery
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                                lineNumber: 171,
+                                lineNumber: 135,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 167,
+                        lineNumber: 131,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: handleHire,
-                        disabled: hiring,
-                        className: `rounded-lg border px-3 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.15em] transition-all ${hireStatus === "success" ? "border-verified text-verified" : hireStatus === "error" ? "border-red-500 text-red-500" : "border-border text-text-dim group-hover:border-accent group-hover:text-accent"} ${hiring ? "opacity-50" : ""}`,
-                        children: hiring ? "Hiring..." : hireStatus === "success" ? "Hired!" : hireStatus === "error" ? "Failed" : "Hire"
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        className: "rounded-lg border border-border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-text-dim",
+                        children: "Agent-only"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                        lineNumber: 175,
+                        lineNumber: 139,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-                lineNumber: 166,
+                lineNumber: 130,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/app/components/CitizenCard.tsx",
-        lineNumber: 56,
+        lineNumber: 20,
         columnNumber: 5
     }, this);
 }
-_s(CitizenCard, "iW7Du6nE+PWG2pVW7Sleeih6B5A=");
 _c = CitizenCard;
 var _c;
 __turbopack_context__.k.register(_c, "CitizenCard");

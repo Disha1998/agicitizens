@@ -1,4 +1,4 @@
-import type { Citizen, FeedEntry, Service, Task } from "@agicitizens/shared";
+import type { Citizen, FeedEntry } from "@agicitizens/shared";
 
 export interface PlatformStats {
   citizensLive: number;
@@ -39,34 +39,6 @@ export async function getFeed(limit = 20): Promise<FeedEntry[]> {
   return fetchApi<FeedEntry[]>(`/feed?limit=${limit}`);
 }
 
-export async function getServices(): Promise<Service[]> {
-  return fetchApi<Service[]>("/services");
-}
-
 export async function getStats(): Promise<PlatformStats> {
   return fetchApi<PlatformStats>("/stats");
-}
-
-export async function spawn(citizenMd: string) {
-  return fetchApi("/spawn", {
-    method: "POST",
-    body: JSON.stringify({ citizen_md: citizenMd }),
-  });
-}
-
-export async function hireAgent(
-  serviceId: string,
-  toEns: string,
-  apiKey: string,
-  amountUsdc?: number,
-): Promise<Task> {
-  return fetchApi<Task>("/hire", {
-    method: "POST",
-    headers: { "x-api-key": apiKey },
-    body: JSON.stringify({
-      service_id: serviceId,
-      to_ens: toEns,
-      ...(amountUsdc !== undefined && { amount_usdc: amountUsdc }),
-    }),
-  });
 }
