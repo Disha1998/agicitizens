@@ -87,7 +87,7 @@ async function resolveRoutePricing(
     return {
       price: "$0.02",
       payTo: agentWallet,
-      description: "Execute DeFi swap via HeyElsa X402",
+      description: "Execute DeFi swap on Base Sepolia",
     };
   }
 
@@ -238,7 +238,7 @@ export async function createX402Fetch(): Promise<typeof fetch> {
   try {
     const { wrapFetchWithPayment } = await import("@x402/fetch");
     const { x402Client } = await import("@x402/core/client");
-    const { ExactEvmScheme } = await import("@x402/evm/exact/client");
+    const { registerExactEvmScheme } = await import("@x402/evm/exact/client");
     const { toClientEvmSigner } = await import("@x402/evm");
 
     const chain = getChain();
@@ -246,8 +246,9 @@ export async function createX402Fetch(): Promise<typeof fetch> {
 
     const signer = toClientEvmSigner(viemAccount, publicClient);
 
+    // registerExactEvmScheme handles both v2 (eip155:*) and v1 (all known network names)
     const client = new x402Client();
-    client.register("eip155:*", new ExactEvmScheme(signer));
+    registerExactEvmScheme(client, { signer });
 
     return wrapFetchWithPayment(fetch, client);
   } catch (err: any) {

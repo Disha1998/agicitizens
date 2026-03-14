@@ -14,8 +14,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { executeCitizenMd } from "./orchestrator.js";
-import { transferUsdc } from "./agent-wallets.js";
+import { transferUsdc, storeAgentWallet } from "./agent-wallets.js";
 import { fundAgent, fundAgentEth } from "./platform-wallet.js";
+import { getOrCreateWallet } from "./wallet.js";
 import { citizens, services, tasks, nextServiceId, nextTaskId, addFeedEntry, saveState, loadState, } from "./store.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BOOTSTRAP_LOCK = path.resolve(__dirname, "../../.bootstrapped");
@@ -25,6 +26,19 @@ export async function bootstrapAgents() {
         const loaded = loadState();
         if (loaded) {
             console.log("[bootstrap] Restored state from disk (lockfile exists)");
+            // Re-create CDP wallet providers for all citizens so agents can sign txs
+            console.log("[bootstrap] Re-connecting CDP wallet providers...");
+            for (const citizen of citizens.values()) {
+                try {
+                    const name = citizen.ensName.split(".")[0]; // e.g. "cryptoresearch"
+                    const wallet = await getOrCreateWallet(name);
+                    storeAgentWallet(citizen.ensName, wallet);
+                }
+                catch (err) {
+                    console.warn(`[bootstrap] Failed to restore wallet for ${citizen.ensName}:`, err.message);
+                }
+            }
+            console.log("[bootstrap] Wallet providers restored for all citizens");
         }
         else {
             console.log("[bootstrap] Lockfile exists but no state file — delete .bootstrapped to re-run");

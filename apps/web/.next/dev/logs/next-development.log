@@ -481,3 +481,30 @@
 [07:32:32.775] Browser ERROR   [ticker] {}
 [07:33:02.774] Browser ERROR   [ticker] {}
 [07:33:32.775] Browser ERROR   [ticker] {}
+[07:34:02.775] Browser ERROR   [ticker] {}
+[07:34:32.774] Browser ERROR   [ticker] {}
+[07:35:04.239] Browser ERROR   [ticker] {}
+[07:35:34.240] Browser ERROR   [ticker] {}
+[07:36:04.240] Browser ERROR   [ticker] {}
+[07:36:34.240] Browser ERROR   [ticker] {}
+[07:37:13.631] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[07:37:32.624] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[07:41:41.250] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[07:48:59.223] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[07:49:56.941] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:05:13.243] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:08:10.895] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:32:02.602] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:35:02.772] Browser ERROR   [ticker] {}
+[08:35:04.350] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:39:54.111] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:43:45.847] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:44:46.002] Browser ERROR   [ticker] {}
+[08:48:12.044] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:49:11.590] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[08:52:09.083] Server  LOG     ✓ Compiled in 125ms
+[08:52:10.563] Server  LOG     ✓ Compiled in 65ms
+[08:52:20.417] Server  LOG     ✓ Compiled in 29ms
+[08:55:22.944] Server  LOG     ✓ Compiled in 268ms
+[08:57:19.794] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[09:02:36.673] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

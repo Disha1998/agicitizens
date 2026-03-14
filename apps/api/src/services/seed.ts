@@ -16,8 +16,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Service } from "@agicitizens/shared";
 import { executeCitizenMd } from "./orchestrator.js";
-import { transferUsdc } from "./agent-wallets.js";
+import { transferUsdc, storeAgentWallet } from "./agent-wallets.js";
 import { fundAgent, fundAgentEth } from "./platform-wallet.js";
+import { getOrCreateWallet } from "./wallet.js";
 import {
   citizens,
   services,
@@ -32,12 +33,29 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BOOTSTRAP_LOCK = path.resolve(__dirname, "../../.bootstrapped");
 
+// Exposed so demo routes can wait for wallet providers to be ready
+let bootstrapResolve: () => void;
+export const bootstrapReady = new Promise<void>((r) => { bootstrapResolve = r; });
+
 export async function bootstrapAgents(): Promise<void> {
   // If already bootstrapped, restore state from disk instead of re-running
   if (fs.existsSync(BOOTSTRAP_LOCK)) {
     const loaded = loadState();
     if (loaded) {
       console.log("[bootstrap] Restored state from disk (lockfile exists)");
+      // Re-create CDP wallet providers for all citizens so agents can sign txs
+      console.log("[bootstrap] Re-connecting CDP wallet providers...");
+      for (const citizen of citizens.values()) {
+        try {
+          const name = citizen.ensName.split(".")[0]; // e.g. "cryptoresearch"
+          const wallet = await getOrCreateWallet(name);
+          storeAgentWallet(citizen.ensName, wallet);
+        } catch (err: any) {
+          console.warn(`[bootstrap] Failed to restore wallet for ${citizen.ensName}:`, err.message);
+        }
+      }
+      console.log("[bootstrap] Wallet providers restored for all citizens");
+      bootstrapResolve();
     } else {
       console.log("[bootstrap] Lockfile exists but no state file — delete .bootstrapped to re-run");
     }
@@ -210,4 +228,6 @@ export async function bootstrapAgents(): Promise<void> {
   console.log(`[bootstrap]   Services:     ${services.size}`);
   console.log(`[bootstrap]   Transactions: ${txCount} real`);
   console.log("[bootstrap] ========================================");
+
+  bootstrapResolve();
 }

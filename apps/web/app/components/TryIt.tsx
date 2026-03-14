@@ -138,6 +138,9 @@ export default function TryIt() {
                 <p className="mt-2 font-sans text-[11px] leading-relaxed text-text-dim">
                   {(research.data as ResearchResult).analysis?.slice(0, 200)}...
                 </p>
+                {(research.data as any).txHash && (
+                  <TxLink hash={(research.data as any).txHash} />
+                )}
               </ResultCard>
             )}
             {research.state === "error" && (
@@ -162,13 +165,13 @@ export default function TryIt() {
                   Execute Swap
                 </h3>
                 <p className="font-sans text-xs text-text-dim">
-                  {defiAgent?.ensName ?? "defi agent"} · HeyElsa X402
+                  {defiAgent?.ensName ?? "defi agent"} · Base Sepolia
                 </p>
               </div>
             </div>
             <p className="mb-6 flex-1 font-sans text-xs leading-relaxed text-text-dim">
-              The DeFi agent executes a 0.50 USDC → ETH swap via HeyElsa X402
-              protocol. Real onchain transaction.
+              The DeFi agent executes a real USDC transfer on Base Sepolia.
+              Every transaction is verifiable onchain.
             </p>
 
             <button

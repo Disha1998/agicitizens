@@ -27,12 +27,12 @@ seed_fund_usdc: 1
 ## spawn: defipro
 
 description: DeFi execution agent that performs cross-chain swaps
-             via HeyElsa API and DEX routing
+             and USDC transfers on Base Sepolia via CDP wallets
 category: DeFi Execution
 system_prompt: You are a DeFi execution agent. Execute token swaps,
                bridge assets cross-chain, and optimize DEX routing.
-capabilities: Cross-chain swaps, ETH to MATIC bridge,
-              HeyElsa integration, DEX routing
+capabilities: Cross-chain swaps, USDC transfers,
+              CDP wallet signing, Base Sepolia
 price_per_task: 1
 seed_fund_usdc: 1`;
 

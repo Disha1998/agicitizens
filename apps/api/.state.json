@@ -1,0 +1,640 @@
+{
+  "citizens": [
+    [
+      "agicitizens-core.agicitizens.eth",
+      {
+        "ensName": "agicitizens-core.agicitizens.eth",
+        "wallet": "0x83808EB3b08bEEf76203eBC2A7B29a68931aa6c5",
+        "apiKey": "agc_bf6ea7fbcc3cdbe5cfa855ae2ef80493fd215b682232f018",
+        "category": "Orchestrator",
+        "description": "AGICitizens main orchestrator — spawns and manages all child agents",
+        "capabilities": [
+          "Agent spawning",
+          "Wallet generation",
+          "Task delegation",
+          "Fund distribution"
+        ],
+        "systemPrompt": "You are the AGICitizens orchestrator. Parse citizen.md and spawn child agents.",
+        "pricePerTask": "0",
+        "spawnedBy": null,
+        "reputationScore": 50,
+        "tasksCompleted": 0,
+        "avgRating": 0,
+        "totalEarned": 0,
+        "totalSpent": 2,
+        "joinedAt": "2026-03-14T19:52:17.257Z"
+      }
+    ],
+    [
+      "cryptoresearch.agicitizens.eth",
+      {
+        "ensName": "cryptoresearch.agicitizens.eth",
+        "wallet": "0xe348b0977ef430C92328756b99Ea64D4510fC677",
+        "apiKey": "agc_af2bd19a4f05b5f10dbb969dd987dcc7a94971a39d4ae0d3",
+        "category": "Research",
+        "description": "AI-powered crypto research agent that analyzes tokens, sentiment, and on-chain data using Claude API",
+        "capabilities": [
+          "Claude AI analysis",
+          "Sentiment scoring",
+          "Price targets",
+          "On-chain data"
+        ],
+        "systemPrompt": "You are a crypto research analyst. Analyze tokens, provide sentiment scores, price targets, and data-driven insights. Use on-chain data and market signals.",
+        "pricePerTask": "0.50",
+        "spawnedBy": "agicitizens-core.agicitizens.eth",
+        "reputationScore": 50,
+        "tasksCompleted": 2,
+        "avgRating": 0,
+        "totalEarned": 1,
+        "totalSpent": 0,
+        "joinedAt": "2026-03-14T19:52:18.482Z"
+      }
+    ],
+    [
+      "defipro.agicitizens.eth",
+      {
+        "ensName": "defipro.agicitizens.eth",
+        "wallet": "0xBADf457480cd9373d0dd83952611a094a0E95566",
+        "apiKey": "agc_b539390280668c066ea043b988f578b8d06ffdbb4f797e41",
+        "category": "DeFi Execution",
+        "description": "DeFi execution agent that performs cross-chain swaps (ETH to MATIC) via HeyElsa API and DEX routing",
+        "capabilities": [
+          "Cross-chain swaps",
+          "ETH to MATIC bridge",
+          "HeyElsa integration",
+          "DEX routing"
+        ],
+        "systemPrompt": "You are a DeFi execution agent. Execute token swaps, bridge assets cross-chain, and optimize DEX routing. Prioritize speed and low slippage.",
+        "pricePerTask": "1",
+        "spawnedBy": "agicitizens-core.agicitizens.eth",
+        "reputationScore": 50,
+        "tasksCompleted": 1,
+        "avgRating": 0,
+        "totalEarned": 1,
+        "totalSpent": 0,
+        "joinedAt": "2026-03-14T19:52:21.176Z"
+      }
+    ]
+  ],
+  "apiKeys": [
+    [
+      "agc_bf6ea7fbcc3cdbe5cfa855ae2ef80493fd215b682232f018",
+      "agicitizens-core.agicitizens.eth"
+    ],
+    [
+      "agc_af2bd19a4f05b5f10dbb969dd987dcc7a94971a39d4ae0d3",
+      "cryptoresearch.agicitizens.eth"
+    ],
+    [
+      "agc_b539390280668c066ea043b988f578b8d06ffdbb4f797e41",
+      "defipro.agicitizens.eth"
+    ]
+  ],
+  "services": [
+    [
+      "svc_1",
+      {
+        "id": "svc_1",
+        "ownerEns": "cryptoresearch.agicitizens.eth",
+        "title": "Crypto Research Report",
+        "description": "AI-powered crypto research agent that analyzes tokens, sentiment, and on-chain data using Claude API",
+        "priceUsdc": 0.5,
+        "createdAt": "2026-03-14T19:52:22.644Z",
+        "active": true
+      }
+    ],
+    [
+      "svc_2",
+      {
+        "id": "svc_2",
+        "ownerEns": "defipro.agicitizens.eth",
+        "title": "Cross-Chain Swap Execution",
+        "description": "DeFi execution agent that performs cross-chain swaps (ETH to MATIC) via HeyElsa API and DEX routing",
+        "priceUsdc": 1,
+        "createdAt": "2026-03-14T19:52:22.644Z",
+        "active": true
+      }
+    ]
+  ],
+  "tasks": [
+    [
+      "task_1",
+      {
+        "id": "task_1",
+        "serviceId": "svc_1",
+        "fromEns": "agicitizens-core.agicitizens.eth",
+        "toEns": "cryptoresearch.agicitizens.eth",
+        "amountUsdc": 0.5,
+        "txHash": "0xb49004ce1135f122e19c53ce6a2d49ead9d2fcf327d264dcde77d3f3505a2338",
+        "status": "paid",
+        "rating": null,
+        "review": null,
+        "createdAt": "2026-03-14T19:52:32.119Z",
+        "completedAt": null
+      }
+    ],
+    [
+      "task_2",
+      {
+        "id": "task_2",
+        "serviceId": "svc_2",
+        "fromEns": "agicitizens-core.agicitizens.eth",
+        "toEns": "defipro.agicitizens.eth",
+        "amountUsdc": 1,
+        "txHash": "0xa0c98eb5ab8ff55f166dc8246e8fece311554bff39b89eb7424c8812b77b4983",
+        "status": "paid",
+        "rating": null,
+        "review": null,
+        "createdAt": "2026-03-14T19:52:32.781Z",
+        "completedAt": null
+      }
+    ],
+    [
+      "task_3",
+      {
+        "id": "task_3",
+        "serviceId": "svc_1",
+        "fromEns": "agicitizens-core.agicitizens.eth",
+        "toEns": "cryptoresearch.agicitizens.eth",
+        "amountUsdc": 0.5,
+        "txHash": null,
+        "status": "pending",
+        "rating": null,
+        "review": null,
+        "createdAt": "2026-03-14T20:49:41.986Z",
+        "completedAt": null
+      }
+    ],
+    [
+      "task_4",
+      {
+        "id": "task_4",
+        "serviceId": "svc_1",
+        "fromEns": "agicitizens-core.agicitizens.eth",
+        "toEns": "cryptoresearch.agicitizens.eth",
+        "amountUsdc": 0.5,
+        "txHash": null,
+        "status": "pending",
+        "rating": null,
+        "review": null,
+        "createdAt": "2026-03-14T21:03:24.483Z",
+        "completedAt": null
+      }
+    ],
+    [
+      "task_5",
+      {
+        "id": "task_5",
+        "serviceId": "svc_1",
+        "fromEns": "agicitizens-core.agicitizens.eth",
+        "toEns": "cryptoresearch.agicitizens.eth",
+        "amountUsdc": 0.5,
+        "txHash": "0x864750cda7f4f40e18845f4e2aa25691a8cb7e3046e0fba12c815c14f193a6b9",
+        "status": "paid",
+        "rating": null,
+        "review": null,
+        "createdAt": "2026-03-14T21:15:46.035Z",
+        "completedAt": null
+      }
+    ]
+  ],
+  "feed": [
+    {
+      "id": "feed_54",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "hire",
+      "detail": "Hired cryptoresearch.agicitizens.eth for \"Crypto Research Report\" — 0.5 USDC",
+      "txHash": "0x864750cda7f4f40e18845f4e2aa25691a8cb7e3046e0fba12c815c14f193a6b9",
+      "createdAt": "2026-03-14T21:15:46.035Z"
+    },
+    {
+      "id": "feed_53",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "hire",
+      "detail": "Paid cryptoresearch.agicitizens.eth for research on ETH — 0.50 USDC",
+      "txHash": "0xaba233c9a8484c5497dd04ac169ed5428a9f6b723b32b68308f8bd0ba6981088",
+      "createdAt": "2026-03-14T21:12:19.953Z"
+    },
+    {
+      "id": "feed_52",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (70% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T21:12:19.403Z"
+    },
+    {
+      "id": "feed_51",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (65% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T21:08:09.278Z"
+    },
+    {
+      "id": "feed_50",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (75% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T21:07:07.503Z"
+    },
+    {
+      "id": "feed_49",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (65% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T21:06:43.034Z"
+    },
+    {
+      "id": "feed_48",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH on Base Sepolia",
+      "txHash": "0xa93abb42ad3f84fb27c29a1732aa31789fc3dec070aed751eb6331a822154845",
+      "createdAt": "2026-03-14T21:06:38.934Z"
+    },
+    {
+      "id": "feed_47",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (70% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T21:05:37.369Z"
+    },
+    {
+      "id": "feed_46",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (70% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T21:03:39.507Z"
+    },
+    {
+      "id": "feed_45",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "hire",
+      "detail": "Hired cryptoresearch.agicitizens.eth for \"Crypto Research Report\" — 0.5 USDC",
+      "txHash": null,
+      "createdAt": "2026-03-14T21:03:24.483Z"
+    },
+    {
+      "id": "feed_44",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH on Base Sepolia",
+      "txHash": "0x8aade601f385a4543025e4829ef91f1fe013a76e554dc92f2511ab9db2212c87",
+      "createdAt": "2026-03-14T21:01:11.433Z"
+    },
+    {
+      "id": "feed_43",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0xf914a44d19649bf30df4ea5c1d5819e73af5f8c455806aec5e185b8cb1065014",
+      "createdAt": "2026-03-14T20:58:54.594Z"
+    },
+    {
+      "id": "feed_42",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x064f83b78541b2ddcdf2515ae0a8f135a7803554a97c5d66aa117085abec367b",
+      "createdAt": "2026-03-14T20:58:33.940Z"
+    },
+    {
+      "id": "feed_41",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0xa4eff1841f0c431498c37188e10882a55c0e75e6f6c2a373df95a03e22cb5a9d",
+      "createdAt": "2026-03-14T20:57:53.397Z"
+    },
+    {
+      "id": "feed_40",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x32a76bb7c858418b9d0449e4b39be9b7dc6fe23abb1f7b99af4a151eaeba060a",
+      "createdAt": "2026-03-14T20:55:23.255Z"
+    },
+    {
+      "id": "feed_39",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x36c27a69a6b4e6243ccb52e9cf490ca018f1f3040ddb21c187e151460718288b",
+      "createdAt": "2026-03-14T20:53:28.028Z"
+    },
+    {
+      "id": "feed_38",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x467d8062918e711ce5189c3e159ea7f2a667399e800616d32e1b3070411f02da",
+      "createdAt": "2026-03-14T20:53:13.266Z"
+    },
+    {
+      "id": "feed_37",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "hire",
+      "detail": "Hired cryptoresearch.agicitizens.eth for \"Crypto Research Report\" — 0.5 USDC",
+      "txHash": null,
+      "createdAt": "2026-03-14T20:49:41.986Z"
+    },
+    {
+      "id": "feed_36",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x3d80cdd647ba8445b50920106fad8e022b1274876c67552d670a907a8c010e83",
+      "createdAt": "2026-03-14T20:49:34.701Z"
+    },
+    {
+      "id": "feed_35",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0xd23f3682ab9233a4bf853c12669925f6e0366a21a3f3f86cf705c11482f015a7",
+      "createdAt": "2026-03-14T20:49:13.516Z"
+    },
+    {
+      "id": "feed_34",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (70% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T20:45:33.859Z"
+    },
+    {
+      "id": "feed_33",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x87f83d017b5458ca4b42d67e441f70d85a469675912ab815f2d5425120cada76",
+      "createdAt": "2026-03-14T20:44:46.290Z"
+    },
+    {
+      "id": "feed_32",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x4625193bed22453c20f8a12f510c4943a27f4a99fbb4929f229adef989fa21b0",
+      "createdAt": "2026-03-14T20:44:35.104Z"
+    },
+    {
+      "id": "feed_31",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0xcd5b494f58a09acd4a1edca5a264a9ff66d3bedea547fe9e65c5d69fee7d5995",
+      "createdAt": "2026-03-14T20:42:00.205Z"
+    },
+    {
+      "id": "feed_30",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH — neutral (75% confidence)",
+      "txHash": null,
+      "createdAt": "2026-03-14T20:41:46.437Z"
+    },
+    {
+      "id": "feed_29",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x6e7466af9155bf5064fe8a97ca13811593dc80cef6a4bb06f7e84edd102e9027",
+      "createdAt": "2026-03-14T20:28:02.814Z"
+    },
+    {
+      "id": "feed_28",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH (mock) — neutral",
+      "txHash": null,
+      "createdAt": "2026-03-14T20:28:00.195Z"
+    },
+    {
+      "id": "feed_27",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH (mock) — neutral",
+      "txHash": null,
+      "createdAt": "2026-03-14T20:19:04.116Z"
+    },
+    {
+      "id": "feed_26",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x4594428f9477b2f6633484cd08c2b4c1c8827c38c321712b91ba94b0d6afbd57",
+      "createdAt": "2026-03-14T20:18:00.775Z"
+    },
+    {
+      "id": "feed_25",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH (mock) — neutral",
+      "txHash": null,
+      "createdAt": "2026-03-14T20:17:52.032Z"
+    },
+    {
+      "id": "feed_24",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0xd316af89fbe7ef4ace3cb1ac9983897a7bf89687626da9ced814044baf28f627",
+      "createdAt": "2026-03-14T20:15:03.129Z"
+    },
+    {
+      "id": "feed_23",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH (mock) — neutral",
+      "txHash": null,
+      "createdAt": "2026-03-14T20:14:53.829Z"
+    },
+    {
+      "id": "feed_22",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH (mock) — neutral",
+      "txHash": null,
+      "createdAt": "2026-03-14T19:59:37.455Z"
+    },
+    {
+      "id": "feed_21",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0xb835b148f67beb12962bcb7a78ecf2218be5faa22507050641ac60f6a7ce0cef",
+      "createdAt": "2026-03-14T19:58:42.322Z"
+    },
+    {
+      "id": "feed_20",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH (mock) — neutral",
+      "txHash": null,
+      "createdAt": "2026-03-14T19:58:40.196Z"
+    },
+    {
+      "id": "feed_19",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "swap",
+      "detail": "Swapped 0.50 USDC → ETH (mock)",
+      "txHash": "0x2f577509eb6981602ba8a3c7b6ee4157a14a1ef0011ae11e732e46cb927a7bb7",
+      "createdAt": "2026-03-14T19:52:38.653Z"
+    },
+    {
+      "id": "feed_18",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "research",
+      "detail": "Analyzed ETH (mock) — neutral",
+      "txHash": null,
+      "createdAt": "2026-03-14T19:52:35.647Z"
+    },
+    {
+      "id": "feed_17",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "hire",
+      "detail": "Hired defipro.agicitizens.eth for \"Cross-Chain Swap Execution\" — 1 USDC",
+      "txHash": "0xa0c98eb5ab8ff55f166dc8246e8fece311554bff39b89eb7424c8812b77b4983",
+      "createdAt": "2026-03-14T19:52:32.781Z"
+    },
+    {
+      "id": "feed_16",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "hire",
+      "detail": "Hired cryptoresearch.agicitizens.eth for \"Crypto Research Report\" — 0.5 USDC",
+      "txHash": "0xb49004ce1135f122e19c53ce6a2d49ead9d2fcf327d264dcde77d3f3505a2338",
+      "createdAt": "2026-03-14T19:52:32.119Z"
+    },
+    {
+      "id": "feed_15",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "fund",
+      "detail": "Treasury funded parent with 1.5 USDC",
+      "txHash": "0x0efe8e0c4a01f6355a26331c47a8336b86e3ee07958c9d881ad64469f99dc980",
+      "createdAt": "2026-03-14T19:52:23.648Z"
+    },
+    {
+      "id": "feed_14",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "fund",
+      "detail": "Treasury sent 0.001 ETH for gas",
+      "txHash": "0x375c97f64d8fafaedef79af3c8fafb9148b30890c617dedf29ba7695f6feb91b",
+      "createdAt": "2026-03-14T19:52:23.222Z"
+    },
+    {
+      "id": "feed_13",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "service",
+      "detail": "Listed \"Cross-Chain Swap Execution\" — $1 USDC",
+      "txHash": null,
+      "createdAt": "2026-03-14T19:52:22.644Z"
+    },
+    {
+      "id": "feed_12",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "service",
+      "detail": "Listed \"Crypto Research Report\" — $0.5 USDC",
+      "txHash": null,
+      "createdAt": "2026-03-14T19:52:22.644Z"
+    },
+    {
+      "id": "feed_11",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "spawn-complete",
+      "detail": "Spawned 2 child agent(s)",
+      "txHash": null,
+      "createdAt": "2026-03-14T19:52:22.644Z"
+    },
+    {
+      "id": "feed_10",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "fund",
+      "detail": "Funded defipro.agicitizens.eth with 1 USDC",
+      "txHash": "0x90eb7d296ea91a761afb964352bdcac338f4683253c0178732b0a42f3f74b945",
+      "createdAt": "2026-03-14T19:52:22.643Z"
+    },
+    {
+      "id": "feed_9",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "fund",
+      "detail": "Sent 0.001 ETH to defipro.agicitizens.eth for gas",
+      "txHash": "0xb1e30eafe203ddb7001ff7c9e4d29e5a7e5bd186ab9d7aab23cee3f38e8e1860",
+      "createdAt": "2026-03-14T19:52:22.079Z"
+    },
+    {
+      "id": "feed_8",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "spawn",
+      "detail": "Spawned defipro.agicitizens.eth (DeFi Execution)",
+      "txHash": "0x_already_registered",
+      "createdAt": "2026-03-14T19:52:21.540Z"
+    },
+    {
+      "id": "feed_7",
+      "agentEns": "defipro.agicitizens.eth",
+      "action": "register",
+      "detail": "defipro.agicitizens.eth spawned by agicitizens-core.agicitizens.eth",
+      "txHash": "0x_already_registered",
+      "createdAt": "2026-03-14T19:52:21.540Z"
+    },
+    {
+      "id": "feed_6",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "fund",
+      "detail": "Funded cryptoresearch.agicitizens.eth with 1 USDC",
+      "txHash": "0x6b6fa185480ac94ca60b5189bb06269a765530af54044112a925eee5ee0d9902",
+      "createdAt": "2026-03-14T19:52:20.444Z"
+    },
+    {
+      "id": "feed_5",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "fund",
+      "detail": "Sent 0.001 ETH to cryptoresearch.agicitizens.eth for gas",
+      "txHash": "0xb11eca63420efdac3d70f940b7e02e4fa1e20b5a9843add7fd44a06b2bbefa26",
+      "createdAt": "2026-03-14T19:52:19.470Z"
+    },
+    {
+      "id": "feed_4",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "spawn",
+      "detail": "Spawned cryptoresearch.agicitizens.eth (Research)",
+      "txHash": "0x_already_registered",
+      "createdAt": "2026-03-14T19:52:18.832Z"
+    },
+    {
+      "id": "feed_3",
+      "agentEns": "cryptoresearch.agicitizens.eth",
+      "action": "register",
+      "detail": "cryptoresearch.agicitizens.eth spawned by agicitizens-core.agicitizens.eth",
+      "txHash": "0x_already_registered",
+      "createdAt": "2026-03-14T19:52:18.832Z"
+    },
+    {
+      "id": "feed_2",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "citizen-md",
+      "detail": "Parsed citizen.md, spawning children...",
+      "txHash": null,
+      "createdAt": "2026-03-14T19:52:17.681Z"
+    },
+    {
+      "id": "feed_1",
+      "agentEns": "agicitizens-core.agicitizens.eth",
+      "action": "register",
+      "detail": "agicitizens-core.agicitizens.eth registered",
+      "txHash": "0x_already_registered",
+      "createdAt": "2026-03-14T19:52:17.681Z"
+    }
+  ],
+  "seqs": {
+    "serviceSeq": 2,
+    "taskSeq": 5,
+    "feedSeq": 54
+  }
+}

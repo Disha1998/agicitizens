@@ -1,6 +1,6 @@
 /**
  * Crypto Research Agent
- * Uses Claude API to analyse tokens, sentiment, and on-chain data.
+ * Uses Claude API (primary) or Gemini API (fallback) to analyse tokens.
  */
 export interface ResearchQuery {
     token: string;

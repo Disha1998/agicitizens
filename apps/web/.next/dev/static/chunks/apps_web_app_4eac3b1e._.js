@@ -1883,12 +1883,12 @@ seed_fund_usdc: 1
 ## spawn: defipro
 
 description: DeFi execution agent that performs cross-chain swaps
-             via HeyElsa API and DEX routing
+             and USDC transfers on Base Sepolia via CDP wallets
 category: DeFi Execution
 system_prompt: You are a DeFi execution agent. Execute token swaps,
                bridge assets cross-chain, and optimize DEX routing.
-capabilities: Cross-chain swaps, ETH to MATIC bridge,
-              HeyElsa integration, DEX routing
+capabilities: Cross-chain swaps, USDC transfers,
+              CDP wallet signing, Base Sepolia
 price_per_task: 1
 seed_fund_usdc: 1`;
 function highlightLine(line, i) {
@@ -2415,6 +2415,13 @@ function TryIt() {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
                                             lineNumber: 138,
                                             columnNumber: 17
+                                        }, this),
+                                        research.data.txHash && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TxLink, {
+                                            hash: research.data.txHash
+                                        }, void 0, false, {
+                                            fileName: "[project]/apps/web/app/components/TryIt.tsx",
+                                            lineNumber: 142,
+                                            columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
@@ -2426,7 +2433,7 @@ function TryIt() {
                                     message: research.error
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 144,
+                                    lineNumber: 147,
                                     columnNumber: 15
                                 }, this)
                             ]
@@ -2461,7 +2468,7 @@ function TryIt() {
                                             children: "🔄"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 157,
+                                            lineNumber: 160,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2471,38 +2478,38 @@ function TryIt() {
                                                     children: "Execute Swap"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                                    lineNumber: 161,
+                                                    lineNumber: 164,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                     className: "font-sans text-xs text-text-dim",
                                                     children: [
                                                         defiAgent?.ensName ?? "defi agent",
-                                                        " · HeyElsa X402"
+                                                        " · Base Sepolia"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                                    lineNumber: 164,
+                                                    lineNumber: 167,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 160,
+                                            lineNumber: 163,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 156,
+                                    lineNumber: 159,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                     className: "mb-6 flex-1 font-sans text-xs leading-relaxed text-text-dim",
-                                    children: "The DeFi agent executes a 0.50 USDC → ETH swap via HeyElsa X402 protocol. Real onchain transaction."
+                                    children: "The DeFi agent executes a real USDC transfer on Base Sepolia. Every transaction is verifiable onchain."
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 169,
+                                    lineNumber: 172,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2512,7 +2519,7 @@ function TryIt() {
                                     children: swap.state === "loading" ? "Swapping..." : "Swap 0.50 USDC → ETH"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 174,
+                                    lineNumber: 177,
                                     columnNumber: 13
                                 }, this),
                                 swap.state === "done" && swap.data && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ResultCard, {
@@ -2522,7 +2529,7 @@ function TryIt() {
                                             value: swap.data.agent
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 185,
+                                            lineNumber: 188,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ResultRow, {
@@ -2530,7 +2537,7 @@ function TryIt() {
                                             value: swap.data.route
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 186,
+                                            lineNumber: 189,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ResultRow, {
@@ -2538,33 +2545,33 @@ function TryIt() {
                                             value: `${swap.data.amountIn} → ${swap.data.amountOut}`
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 187,
+                                            lineNumber: 190,
                                             columnNumber: 17
                                         }, this),
                                         swap.data.txHash && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TxLink, {
                                             hash: swap.data.txHash
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 192,
+                                            lineNumber: 195,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 184,
+                                    lineNumber: 187,
                                     columnNumber: 15
                                 }, this),
                                 swap.state === "error" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ErrorCard, {
                                     message: swap.error
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 197,
+                                    lineNumber: 200,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                            lineNumber: 149,
+                            lineNumber: 152,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2593,7 +2600,7 @@ function TryIt() {
                                             children: "💰"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 210,
+                                            lineNumber: 213,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2603,7 +2610,7 @@ function TryIt() {
                                                     children: "Hire Agent"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                                    lineNumber: 214,
+                                                    lineNumber: 217,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2611,19 +2618,19 @@ function TryIt() {
                                                     children: firstService ? `${firstService.ownerEns} · $${firstService.priceUsdc} USDC` : "loading..."
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                                    lineNumber: 217,
+                                                    lineNumber: 220,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 213,
+                                            lineNumber: 216,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 209,
+                                    lineNumber: 212,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2631,7 +2638,7 @@ function TryIt() {
                                     children: "Parent agent hires a child agent and pays with real USDC on Base Sepolia. Verifiable peer-to-peer payment."
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 224,
+                                    lineNumber: 227,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2641,7 +2648,7 @@ function TryIt() {
                                     children: hire.state === "loading" ? "Hiring..." : firstService ? `Hire for ${firstService.priceUsdc} USDC` : "Loading..."
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 229,
+                                    lineNumber: 232,
                                     columnNumber: 13
                                 }, this),
                                 hire.state === "done" && hire.data && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ResultCard, {
@@ -2651,7 +2658,7 @@ function TryIt() {
                                             value: hire.data.fromEns
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 244,
+                                            lineNumber: 247,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ResultRow, {
@@ -2659,7 +2666,7 @@ function TryIt() {
                                             value: hire.data.toEns
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 245,
+                                            lineNumber: 248,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ResultRow, {
@@ -2668,7 +2675,7 @@ function TryIt() {
                                             highlight: true
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 246,
+                                            lineNumber: 249,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ResultRow, {
@@ -2676,33 +2683,33 @@ function TryIt() {
                                             value: hire.data.paymentVerified ? "Paid ✓" : "Pending"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 251,
+                                            lineNumber: 254,
                                             columnNumber: 17
                                         }, this),
                                         hire.data.txHash && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TxLink, {
                                             hash: hire.data.txHash
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                            lineNumber: 256,
+                                            lineNumber: 259,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 243,
+                                    lineNumber: 246,
                                     columnNumber: 15
                                 }, this),
                                 hire.state === "error" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ErrorCard, {
                                     message: hire.error
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                                    lineNumber: 261,
+                                    lineNumber: 264,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                            lineNumber: 202,
+                            lineNumber: 205,
                             columnNumber: 11
                         }, this)
                     ]
@@ -2742,7 +2749,7 @@ _c = TryIt;
         children: children
     }, void 0, false, {
         fileName: "[project]/apps/web/app/components/TryIt.tsx",
-        lineNumber: 274,
+        lineNumber: 277,
         columnNumber: 5
     }, this);
 }
@@ -2756,7 +2763,7 @@ function ResultRow({ label, value, highlight }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                lineNumber: 296,
+                lineNumber: 299,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2764,13 +2771,13 @@ function ResultRow({ label, value, highlight }) {
                 children: value
             }, void 0, false, {
                 fileName: "[project]/apps/web/app/components/TryIt.tsx",
-                lineNumber: 299,
+                lineNumber: 302,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/app/components/TryIt.tsx",
-        lineNumber: 295,
+        lineNumber: 298,
         columnNumber: 5
     }, this);
 }
@@ -2784,7 +2791,7 @@ function TxLink({ hash }) {
         children: "View on BaseScan →"
     }, void 0, false, {
         fileName: "[project]/apps/web/app/components/TryIt.tsx",
-        lineNumber: 310,
+        lineNumber: 313,
         columnNumber: 5
     }, this);
 }
@@ -2797,12 +2804,12 @@ function ErrorCard({ message }) {
             children: message
         }, void 0, false, {
             fileName: "[project]/apps/web/app/components/TryIt.tsx",
-            lineNumber: 324,
+            lineNumber: 327,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/apps/web/app/components/TryIt.tsx",
-        lineNumber: 323,
+        lineNumber: 326,
         columnNumber: 5
     }, this);
 }

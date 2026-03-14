@@ -4,7 +4,7 @@
  * Replaces ENS_OWNER_PRIVATE_KEY entirely:
  * - Treasury address for X402 /register fees
  * - ENS domain owner (signs createSubname / setTextRecord)
- * - X402 buyer-side signer (pays HeyElsa for swaps)
+ * - X402 buyer-side signer (pays for external API calls)
  *
  * No private keys in env vars. CDP manages key security.
  * Only needs: CDP_API_KEY_ID + CDP_API_KEY_SECRET (API credentials).
@@ -96,9 +96,14 @@ async function initPlatformWallet(): Promise<PlatformWallet> {
         });
       },
       getViemAccount: async () => {
-        // CDP wallet provider can act as a signer
-        // Return the provider itself — it has sign methods
-        return provider;
+        // Wrap CDP provider as a viem-compatible account
+        // toClientEvmSigner needs .address and .signTypedData
+        return {
+          address: provider.getAddress() as `0x${string}`,
+          signTypedData: (msg: any) => provider.signTypedData(msg),
+          signMessage: (msg: any) => provider.signMessage(msg),
+          signTransaction: (tx: any) => provider.signTransaction(tx),
+        };
       },
     };
   } catch (err: any) {

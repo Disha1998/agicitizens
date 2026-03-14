@@ -10,6 +10,7 @@ import {
 import { runResearch } from "../services/crypto-research.js";
 import { executeSwap } from "../services/defi-pro.js";
 import { transferUsdc } from "../services/agent-wallets.js";
+import { bootstrapReady } from "../services/seed.js";
 
 const router = Router();
 
@@ -35,6 +36,7 @@ function findParent() {
  */
 router.post("/demo/research", async (req, res) => {
   try {
+    await bootstrapReady;
     const agent = findAgent("Research");
     if (!agent) {
       res.status(503).json({ error: "No research agent available. Run bootstrap first." });
@@ -48,8 +50,26 @@ router.post("/demo/research", async (req, res) => {
     }
 
     const result = await runResearch(agent.ensName, { token });
+
+    // Pay the research agent (parent → research agent) with real USDC
+    let txHash: string | null = null;
+    const parent = findParent();
+    if (parent && agent.wallet) {
+      try {
+        txHash = await transferUsdc(parent.ensName, agent.wallet, 0.50);
+        addFeedEntry(
+          parent.ensName,
+          "hire",
+          `Paid ${agent.ensName} for research on ${token} — 0.50 USDC`,
+          txHash,
+        );
+      } catch (err: any) {
+        console.warn("[demo/research] USDC payment failed:", err.message);
+      }
+    }
+
     saveState();
-    res.json({ agent: agent.ensName, ...result });
+    res.json({ agent: agent.ensName, txHash, ...result });
   } catch (err: any) {
     console.error("[demo/research]", err);
     res.status(500).json({ error: err.message });
@@ -63,6 +83,7 @@ router.post("/demo/research", async (req, res) => {
  */
 router.post("/demo/swap", async (req, res) => {
   try {
+    await bootstrapReady;
     const agent = findAgent("DeFi Execution");
     if (!agent) {
       res.status(503).json({ error: "No DeFi agent available. Run bootstrap first." });
@@ -91,6 +112,7 @@ router.post("/demo/swap", async (req, res) => {
  */
 router.post("/demo/hire", async (req, res) => {
   try {
+    await bootstrapReady;
     const parent = findParent();
     if (!parent) {
       res.status(503).json({ error: "No parent agent available. Run bootstrap first." });
@@ -164,7 +186,8 @@ router.post("/demo/hire", async (req, res) => {
  * GET /api/v1/demo/agents
  * Returns available agents and services for the TryIt UI.
  */
-router.get("/demo/agents", (_req, res) => {
+router.get("/demo/agents", async (_req, res) => {
+  await bootstrapReady;
   const agents = [...citizens.values()].map((c) => ({
     ensName: c.ensName,
     category: c.category,
