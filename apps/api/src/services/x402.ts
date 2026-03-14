@@ -21,23 +21,19 @@
 import type { Request, Response, NextFunction } from "express";
 import { createPublicClient, http } from "viem";
 import { baseSepolia, base } from "viem/chains";
+import { getPaymentNetwork } from "@agicitizens/shared";
 import { services, citizens } from "./store.js";
 import { getPlatformWallet } from "./platform-wallet.js";
 
-// CAIP-2 network identifiers
-const BASE_SEPOLIA_CAIP2 = "eip155:84532";
-const BASE_MAINNET_CAIP2 = "eip155:8453";
+const paymentNet = getPaymentNetwork();
 
-function getNetwork() {
-  return (process.env.NETWORK_ID || "base-sepolia") === "base"
-    ? BASE_MAINNET_CAIP2
-    : BASE_SEPOLIA_CAIP2;
+// CAIP-2 identifier for X402 (always Base chain)
+function getNetwork(): `${string}:${string}` {
+  return `eip155:${paymentNet.chainId}`;
 }
 
 function getChain() {
-  return (process.env.NETWORK_ID || "base-sepolia") === "base"
-    ? base
-    : baseSepolia;
+  return paymentNet.chainId === 8453 ? base : baseSepolia;
 }
 
 /**

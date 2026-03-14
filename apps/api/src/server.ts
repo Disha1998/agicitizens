@@ -10,6 +10,7 @@ import citizensRoutes from "./routes/citizens.js";
 import agentsRoutes from "./routes/agents.js";
 import statsRoutes from "./routes/stats.js";
 import { buildPaymentMiddleware } from "./services/x402.js";
+import { seedStore } from "./services/seed.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -50,6 +51,9 @@ app.use(v1, feedRoutes);
 app.use(v1, citizensRoutes);
 app.use(v1, agentsRoutes);
 app.use(v1, statsRoutes);
+
+// Seed store with demo agents on startup
+seedStore();
 
 // Start
 app.listen(PORT, () => {

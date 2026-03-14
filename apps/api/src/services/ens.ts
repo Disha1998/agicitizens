@@ -1,27 +1,34 @@
 import { createPublicClient, http } from "viem";
-import { base, baseSepolia } from "viem/chains";
+import { mainnet, sepolia } from "viem/chains";
 import { addEnsContracts } from "@ensdomains/ensjs";
 import { getTextRecord as ensGetTextRecord } from "@ensdomains/ensjs/public";
-import { getNetwork } from "@agicitizens/shared";
+import { getEnsNetwork } from "@agicitizens/shared";
 import { getPlatformWallet } from "./platform-wallet.js";
 
 /**
- * ENS subdomain registration using @ensdomains/ensjs.
+ * ENS identity layer — runs on Ethereum (not Base).
  *
- * Uses the CDP-managed platform wallet to sign ENS transactions.
- * No private keys in env vars — CDP handles key security.
+ * Mainnet: ENS on Ethereum mainnet (chain 1)
+ * Testnet: ENS on Sepolia (chain 11155111)
+ *
+ * X402 payments run separately on Base / Base Sepolia.
  */
 
-const network = getNetwork();
+const ensNetwork = getEnsNetwork();
 
-const chain =
-  network.id === "base"
-    ? addEnsContracts(base as any)
-    : addEnsContracts(baseSepolia as any);
+// Map network ID to viem chain + ENS contracts
+const viemChains: Record<string, any> = {
+  mainnet: addEnsContracts(mainnet as any),
+  sepolia: addEnsContracts(sepolia as any),
+};
+
+const chain = viemChains[ensNetwork.id];
+
+console.log(`[ens] Identity chain: ${ensNetwork.name} (${ensNetwork.chainId})`);
 
 function getPublicClient() {
-  const transport = http(network.rpcUrl);
-  return createPublicClient({ chain: chain as any, transport });
+  const transport = http(ensNetwork.rpcUrl);
+  return createPublicClient({ chain, transport });
 }
 
 /**
@@ -32,31 +39,21 @@ export async function registerSubdomain(
   name: string,
   _ownerAddress: string
 ): Promise<{ ensName: string; txHash: string }> {
-  const ensName = `${name}.${network.identityDomain}`;
+  const ensName = `${name}.${ensNetwork.identityDomain}`;
 
   const wallet = await getPlatformWallet();
   const viemAccount = await wallet.getViemAccount();
 
   if (!viemAccount) {
-    console.warn("[ens] No platform wallet configured — using mock");
     return mockRegister(ensName);
   }
 
-  try {
-    // Use CDP wallet to sign ENS transaction via sendTransaction
-    // For now, use mock until real ENS domain is owned
-    // When ready: encode createSubname calldata and send via wallet.sendTransaction()
-    console.warn("[ens] Real ENS registration requires owning the parent domain — using mock");
-    return mockRegister(ensName);
-  } catch (err: any) {
-    console.error(`[ens] registration failed for ${ensName}:`, err.message);
-    throw new Error(`ENS registration failed: ${err.message}`);
-  }
+  // When real ENS domain is owned, use ensjs createSubname here
+  return mockRegister(ensName);
 }
 
 /**
  * Set text records on an ENS name via the resolver.
- * Used for reputation, tasks completed, rating, etc.
  */
 export async function setTextRecords(
   ensName: string,
@@ -66,13 +63,10 @@ export async function setTextRecords(
   const viemAccount = await wallet.getViemAccount();
 
   if (!viemAccount) {
-    console.warn("[ens] No platform wallet configured — using mock");
     return mockSetText(ensName, records);
   }
 
-  // When real ENS domain is owned, encode setTextRecord calldata
-  // and send via wallet.sendTransaction()
-  console.warn("[ens] Real ENS text records require owning the domain — using mock");
+  // When real ENS domain is owned, use ensjs setTextRecord here
   return mockSetText(ensName, records);
 }
 
@@ -85,7 +79,10 @@ export async function getTextRecord(
 ): Promise<string | null> {
   try {
     const client = getPublicClient();
-    const result = await ensGetTextRecord(client as any, { name: ensName, key });
+    const result = await ensGetTextRecord(client as any, {
+      name: ensName,
+      key,
+    });
     return result ?? null;
   } catch {
     return null;
