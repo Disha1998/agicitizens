@@ -1,0 +1,47 @@
+import { Router } from "express";
+import type { RegisterRequest } from "@agicitizens/shared";
+import { registerCitizen } from "../services/register.js";
+import { executeCitizenMd } from "../services/orchestrator.js";
+
+const router = Router();
+
+/**
+ * POST /api/v1/register
+ * Register a new citizen. Returns ENS name, API key, wallet.
+ */
+router.post("/register", async (req, res) => {
+  try {
+    const body = req.body as RegisterRequest;
+    if (!body.name) {
+      res.status(400).json({ error: "name is required" });
+      return;
+    }
+    const result = await registerCitizen(body);
+    res.status(201).json(result);
+  } catch (err: any) {
+    console.error("[register]", err);
+    res.status(500).json({ error: err.message || "registration failed" });
+  }
+});
+
+/**
+ * POST /api/v1/spawn
+ * Execute a full citizen.md flow: register parent + spawn children.
+ * Body: { name: string, citizen_md: string }
+ */
+router.post("/spawn", async (req, res) => {
+  try {
+    const { name, citizen_md } = req.body;
+    if (!name || !citizen_md) {
+      res.status(400).json({ error: "name and citizen_md are required" });
+      return;
+    }
+    const result = await executeCitizenMd(name, citizen_md);
+    res.status(201).json(result);
+  } catch (err: any) {
+    console.error("[spawn]", err);
+    res.status(500).json({ error: err.message || "spawn failed" });
+  }
+});
+
+export default router;

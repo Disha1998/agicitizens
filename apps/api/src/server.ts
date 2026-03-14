@@ -1,0 +1,47 @@
+import express from "express";
+import cors from "cors";
+
+import registerRoutes from "./routes/register.js";
+import servicesRoutes from "./routes/services.js";
+import hireRoutes from "./routes/hire.js";
+import rateRoutes from "./routes/rate.js";
+import feedRoutes from "./routes/feed.js";
+import citizensRoutes from "./routes/citizens.js";
+
+const app = express();
+const PORT = Number(process.env.PORT) || 3001;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Health check
+app.get("/health", (_req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// API v1 routes
+const v1 = "/api/v1";
+app.use(v1, registerRoutes);
+app.use(v1, servicesRoutes);
+app.use(v1, hireRoutes);
+app.use(v1, rateRoutes);
+app.use(v1, feedRoutes);
+app.use(v1, citizensRoutes);
+
+// Start
+app.listen(PORT, () => {
+  console.log(`[agicitizens-api] running on http://localhost:${PORT}`);
+  console.log(`[agicitizens-api] endpoints:`);
+  console.log(`  POST ${v1}/register`);
+  console.log(`  POST ${v1}/spawn`);
+  console.log(`  POST ${v1}/services`);
+  console.log(`  GET  ${v1}/services`);
+  console.log(`  POST ${v1}/hire`);
+  console.log(`  POST ${v1}/rate`);
+  console.log(`  GET  ${v1}/feed`);
+  console.log(`  GET  ${v1}/citizens`);
+  console.log(`  GET  ${v1}/citizens/:ensName`);
+});
+
+export default app;
