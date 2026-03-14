@@ -9,3 +9,5 @@ export declare function nextTaskId(): string;
 export declare function nextFeedId(): string;
 export declare function addFeedEntry(agentEns: string, action: string, detail: string, txHash?: string | null): FeedEntry;
 export declare function authByCitizenKey(apiKey: string | undefined): Citizen | null;
+export declare function saveState(): void;
+export declare function loadState(): boolean;

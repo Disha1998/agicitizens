@@ -64,14 +64,14 @@ export async function executeSwap(agentEns, swap) {
         return mockSwap(agentEns, swap);
     }
     try {
-        // Get wallet address from AgentKit for the swap destination
-        const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
-        const wallet = await CdpEvmWalletProvider.configureWithWallet({
-            networkId: process.env.NETWORK_ID || "base-sepolia",
-            apiKeyId: process.env.CDP_API_KEY_ID,
-            apiKeySecret: process.env.CDP_API_KEY_SECRET,
-        });
-        const walletAddress = wallet.getAddress();
+        // Use the agent's existing wallet from the registry (don't create a new one)
+        const { getAgentWallet } = await import("./agent-wallets.js");
+        const agentWallet = getAgentWallet(agentEns);
+        const walletAddress = agentWallet?.address;
+        if (!walletAddress) {
+            console.warn(`[defi-pro] No wallet found for ${agentEns}, using mock`);
+            return mockSwap(agentEns, swap);
+        }
         // Step 1: Execute swap via HeyElsa (X402 auto-pays micropayment)
         const x402Fetch = await getX402Fetch();
         const response = await x402Fetch(`${HEYELSA_BASE_URL}/execute_swap`, {

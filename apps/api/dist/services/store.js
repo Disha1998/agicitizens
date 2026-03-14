@@ -1,3 +1,8 @@
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const STATE_FILE = path.resolve(__dirname, "../../.state.json");
 /* ── In-memory data store (replace with Postgres later) ── */
 export const citizens = new Map();
 export const apiKeys = new Map(); // apiKey → ensName
@@ -36,4 +41,55 @@ export function authByCitizenKey(apiKey) {
     if (!ensName)
         return null;
     return citizens.get(ensName) ?? null;
+}
+/* ── Persistence — survive PM2 restarts ── */
+export function saveState() {
+    try {
+        const state = {
+            citizens: [...citizens.entries()],
+            apiKeys: [...apiKeys.entries()],
+            services: [...services.entries()],
+            tasks: [...tasks.entries()],
+            feed,
+            seqs: { serviceSeq, taskSeq, feedSeq },
+        };
+        fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+        console.log(`[store] State saved (${citizens.size} citizens, ${feed.length} feed entries)`);
+    }
+    catch (err) {
+        console.error("[store] Failed to save state:", err.message);
+    }
+}
+export function loadState() {
+    try {
+        if (!fs.existsSync(STATE_FILE))
+            return false;
+        const raw = fs.readFileSync(STATE_FILE, "utf-8");
+        const state = JSON.parse(raw);
+        citizens.clear();
+        for (const [k, v] of state.citizens)
+            citizens.set(k, v);
+        apiKeys.clear();
+        for (const [k, v] of state.apiKeys)
+            apiKeys.set(k, v);
+        services.clear();
+        for (const [k, v] of state.services)
+            services.set(k, v);
+        tasks.clear();
+        for (const [k, v] of state.tasks)
+            tasks.set(k, v);
+        feed.length = 0;
+        feed.push(...(state.feed || []));
+        if (state.seqs) {
+            serviceSeq = state.seqs.serviceSeq || 0;
+            taskSeq = state.seqs.taskSeq || 0;
+            feedSeq = state.seqs.feedSeq || 0;
+        }
+        console.log(`[store] State loaded (${citizens.size} citizens, ${feed.length} feed entries)`);
+        return true;
+    }
+    catch (err) {
+        console.error("[store] Failed to load state:", err.message);
+        return false;
+    }
 }

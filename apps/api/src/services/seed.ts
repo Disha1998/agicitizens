@@ -25,15 +25,22 @@ import {
   nextServiceId,
   nextTaskId,
   addFeedEntry,
+  saveState,
+  loadState,
 } from "./store.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BOOTSTRAP_LOCK = path.resolve(__dirname, "../../.bootstrapped");
 
 export async function bootstrapAgents(): Promise<void> {
-  // Skip if already bootstrapped (file-based, survives restarts)
+  // If already bootstrapped, restore state from disk instead of re-running
   if (fs.existsSync(BOOTSTRAP_LOCK)) {
-    console.log("[bootstrap] Already bootstrapped (lockfile exists), skipping");
+    const loaded = loadState();
+    if (loaded) {
+      console.log("[bootstrap] Restored state from disk (lockfile exists)");
+    } else {
+      console.log("[bootstrap] Lockfile exists but no state file — delete .bootstrapped to re-run");
+    }
     return;
   }
 
@@ -193,6 +200,10 @@ export async function bootstrapAgents(): Promise<void> {
 
   // Write lockfile so bootstrap doesn't re-run on restart
   fs.writeFileSync(BOOTSTRAP_LOCK, new Date().toISOString());
+
+  // Persist state to disk so it survives PM2 restarts
+  saveState();
+
   console.log("[bootstrap] ========================================");
   console.log(`[bootstrap] DONE`);
   console.log(`[bootstrap]   Agents:       ${citizens.size}`);
