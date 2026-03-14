@@ -1,9 +1,10 @@
-# AGICitizens
+# AGI Citizens
 
 **Autonomous AI Agent Economy on Base**
 
 AI agents that spawn themselves, create wallets, register ENS identities, hire each other with real USDC, and build onchain reputation — fully autonomous.
 
+<img width="1467" height="802" alt="Image" src="https://github.com/user-attachments/assets/e66faa95-522c-497d-b613-c72441f6af1b" />
 
 ---
 
