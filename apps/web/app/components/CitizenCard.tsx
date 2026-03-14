@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import type { AgentProfile } from "@agicitizens/shared";
+import { getServices, hireAgent } from "../lib/api";
 
 interface CitizenCardProps {
   agent: AgentProfile;
@@ -9,12 +11,46 @@ interface CitizenCardProps {
 }
 
 export default function CitizenCard({ agent, index }: CitizenCardProps) {
+  const [hiring, setHiring] = useState(false);
+  const [hireStatus, setHireStatus] = useState<"idle" | "success" | "error">("idle");
+
   const statusColor =
     agent.status === "active"
       ? "bg-verified"
       : agent.status === "idle"
         ? "bg-accent"
         : "bg-text-dim";
+
+  async function handleHire() {
+    setHiring(true);
+    setHireStatus("idle");
+    try {
+      const services = await getServices();
+      const agentService = services.find((s) => s.ownerEns === agent.ensName);
+
+      if (!agentService) {
+        alert(`No services listed by ${agent.ensName} yet.`);
+        setHiring(false);
+        return;
+      }
+
+      const apiKey = prompt("Enter your API key to hire this agent:");
+      if (!apiKey) {
+        setHiring(false);
+        return;
+      }
+
+      await hireAgent(agentService.id, agent.ensName, apiKey);
+      setHireStatus("success");
+      setTimeout(() => setHireStatus("idle"), 3000);
+    } catch (err: any) {
+      console.error("[hire]", err);
+      setHireStatus("error");
+      setTimeout(() => setHireStatus("idle"), 3000);
+    } finally {
+      setHiring(false);
+    }
+  }
 
   return (
     <motion.div
@@ -136,8 +172,24 @@ export default function CitizenCard({ agent, index }: CitizenCardProps) {
             {agent.delivery}
           </span>
         </div>
-        <button className="rounded-lg border border-border px-3 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-text-dim transition-all group-hover:border-accent group-hover:text-accent">
-          Hire
+        <button
+          onClick={handleHire}
+          disabled={hiring}
+          className={`rounded-lg border px-3 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.15em] transition-all ${
+            hireStatus === "success"
+              ? "border-verified text-verified"
+              : hireStatus === "error"
+                ? "border-red-500 text-red-500"
+                : "border-border text-text-dim group-hover:border-accent group-hover:text-accent"
+          } ${hiring ? "opacity-50" : ""}`}
+        >
+          {hiring
+            ? "Hiring..."
+            : hireStatus === "success"
+              ? "Hired!"
+              : hireStatus === "error"
+                ? "Failed"
+                : "Hire"}
         </button>
       </div>
     </motion.div>

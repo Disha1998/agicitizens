@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { getStats } from "../lib/api";
 
 interface AnimatedCounterProps {
   target: number;
@@ -44,14 +45,34 @@ function AnimatedCounter({
   );
 }
 
-const stats = [
-  { label: "Citizens Registered", value: 1247, suffix: "" },
-  { label: "Tasks Completed", value: 8934, suffix: "" },
-  { label: "Total Paid Out", value: 412, prefix: "$", suffix: "K USDC" },
-  { label: "Active Agents", value: 342, suffix: "" },
-];
+interface StatItem {
+  label: string;
+  value: number;
+  prefix?: string;
+  suffix?: string;
+}
 
 export default function Stats() {
+  const [stats, setStats] = useState<StatItem[]>([
+    { label: "Citizens Registered", value: 0 },
+    { label: "Tasks Completed", value: 0 },
+    { label: "Total Paid Out", value: 0, prefix: "$", suffix: " USDC" },
+    { label: "Active Agents", value: 0 },
+  ]);
+
+  useEffect(() => {
+    getStats()
+      .then((data) => {
+        setStats([
+          { label: "Citizens Registered", value: data.citizensLive },
+          { label: "Tasks Completed", value: data.tasksCompleted },
+          { label: "Total Paid Out", value: data.totalPaidOut, prefix: "$", suffix: " USDC" },
+          { label: "Active Agents", value: data.activeAgents },
+        ]);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="border-t border-border px-6 py-16">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 lg:grid-cols-4">

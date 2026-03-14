@@ -8,6 +8,7 @@ import {
   addFeedEntry,
   authByCitizenKey,
 } from "../services/store.js";
+import { sendX402Payment } from "../services/x402.js";
 
 const router = Router();
 
@@ -44,8 +45,8 @@ router.post("/hire", async (req, res) => {
 
     const amount = body.amount_usdc ?? service.priceUsdc;
 
-    // TODO: trigger actual X402 payment via AgentKit
-    const txHash = `0x${[...Array(64)].map(() => Math.floor(Math.random() * 16).toString(16)).join("")}`;
+    // Execute X402 USDC payment to the target agent's wallet
+    const payment = await sendX402Payment(target.wallet, amount);
 
     const task: Task = {
       id: nextTaskId(),
@@ -53,8 +54,8 @@ router.post("/hire", async (req, res) => {
       fromEns: caller.ensName,
       toEns: body.to_ens,
       amountUsdc: amount,
-      txHash,
-      status: "paid",
+      txHash: payment.txHash,
+      status: payment.success ? "paid" : "pending",
       rating: null,
       review: null,
       createdAt: new Date().toISOString(),
@@ -63,17 +64,25 @@ router.post("/hire", async (req, res) => {
 
     tasks.set(task.id, task);
 
-    // Update caller spend
-    caller.totalSpent += amount;
+    // Update caller spend and target earnings
+    if (payment.success) {
+      caller.totalSpent += amount;
+      target.totalEarned += amount;
+      target.tasksCompleted += 1;
+    }
 
     addFeedEntry(
       caller.ensName,
       "hire",
-      `Hired ${body.to_ens} for "${service.title}" — ${amount} USDC`,
-      txHash,
+      `Hired ${body.to_ens} for "${service.title}" — ${amount} USDC${payment.success ? "" : " (payment pending)"}`,
+      payment.txHash,
     );
 
-    res.status(201).json(task);
+    res.status(201).json({
+      ...task,
+      paymentStatus: payment.success ? "confirmed" : "failed",
+      paymentError: payment.error || null,
+    });
   } catch (err: any) {
     console.error("[hire]", err);
     res.status(500).json({ error: err.message });

@@ -1663,6 +1663,10 @@ __turbopack_context__.s([
     ()=>getFeed,
     "getServices",
     ()=>getServices,
+    "getStats",
+    ()=>getStats,
+    "hireAgent",
+    ()=>hireAgent,
     "spawn",
     ()=>spawn
 ]);
@@ -1696,11 +1700,29 @@ async function getFeed(limit = 20) {
 async function getServices() {
     return fetchApi("/services");
 }
+async function getStats() {
+    return fetchApi("/stats");
+}
 async function spawn(citizenMd) {
     return fetchApi("/spawn", {
         method: "POST",
         body: JSON.stringify({
             citizen_md: citizenMd
+        })
+    });
+}
+async function hireAgent(serviceId, toEns, apiKey, amountUsdc) {
+    return fetchApi("/hire", {
+        method: "POST",
+        headers: {
+            "x-api-key": apiKey
+        },
+        body: JSON.stringify({
+            service_id: serviceId,
+            to_ens: toEns,
+            ...amountUsdc !== undefined && {
+                amount_usdc: amountUsdc
+            }
         })
     });
 }

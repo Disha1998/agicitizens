@@ -8,8 +8,18 @@
  */
 
 import { addFeedEntry } from "./store.js";
+import { createX402Fetch } from "./x402.js";
 
 const HEYELSA_BASE_URL = "https://x402-api.heyelsa.ai/api";
+
+// Lazily initialized X402-enabled fetch for HeyElsa calls
+let x402FetchPromise: Promise<typeof fetch> | null = null;
+function getX402Fetch(): Promise<typeof fetch> {
+  if (!x402FetchPromise) {
+    x402FetchPromise = createX402Fetch();
+  }
+  return x402FetchPromise;
+}
 
 export interface SwapRequest {
   fromToken: string;
@@ -41,22 +51,6 @@ export interface SwapResult {
 }
 
 /**
- * Create an X402-authenticated HTTP client using AgentKit wallet.
- * The wallet pays micropayments (e.g. $0.01 for quote, $0.02 for execute).
- */
-async function createX402Client() {
-  const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
-
-  const wallet = await CdpEvmWalletProvider.configureWithWallet({
-    networkId: process.env.NETWORK_ID || "base-sepolia",
-    apiKeyId: process.env.CDP_API_KEY_ID,
-    apiKeySecret: process.env.CDP_API_KEY_SECRET,
-  });
-
-  return wallet;
-}
-
-/**
  * Get a swap quote from HeyElsa.
  */
 export async function getSwapQuote(
@@ -64,7 +58,8 @@ export async function getSwapQuote(
   swap: SwapRequest,
 ): Promise<SwapQuote> {
   try {
-    const response = await fetch(`${HEYELSA_BASE_URL}/get_swap_quote`, {
+    const x402Fetch = await getX402Fetch();
+    const response = await x402Fetch(`${HEYELSA_BASE_URL}/get_swap_quote`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -111,11 +106,18 @@ export async function executeSwap(
   }
 
   try {
-    const wallet = await createX402Client();
+    // Get wallet address from AgentKit for the swap destination
+    const { CdpEvmWalletProvider } = await import("@coinbase/agentkit");
+    const wallet = await CdpEvmWalletProvider.configureWithWallet({
+      networkId: process.env.NETWORK_ID || "base-sepolia",
+      apiKeyId: process.env.CDP_API_KEY_ID,
+      apiKeySecret: process.env.CDP_API_KEY_SECRET,
+    });
     const walletAddress = wallet.getAddress();
 
-    // Step 1: Execute swap via HeyElsa
-    const response = await fetch(`${HEYELSA_BASE_URL}/execute_swap`, {
+    // Step 1: Execute swap via HeyElsa (X402 auto-pays micropayment)
+    const x402Fetch = await getX402Fetch();
+    const response = await x402Fetch(`${HEYELSA_BASE_URL}/execute_swap`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -180,7 +182,8 @@ async function pollPipelineStatus(
 ): Promise<string | null> {
   for (let i = 0; i < maxAttempts; i++) {
     try {
-      const response = await fetch(`${HEYELSA_BASE_URL}/get_transaction_status`, {
+      const x402Fetch = await getX402Fetch();
+      const response = await x402Fetch(`${HEYELSA_BASE_URL}/get_transaction_status`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ pipeline_id: pipelineId }),

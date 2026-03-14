@@ -8,6 +8,8 @@ import rateRoutes from "./routes/rate.js";
 import feedRoutes from "./routes/feed.js";
 import citizensRoutes from "./routes/citizens.js";
 import agentsRoutes from "./routes/agents.js";
+import statsRoutes from "./routes/stats.js";
+import { buildX402Middleware } from "./services/x402.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -21,6 +23,19 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// X402 payment middleware (protects paid endpoints)
+// Only enable when a private key is configured
+if (process.env.ENS_OWNER_PRIVATE_KEY) {
+  buildX402Middleware()
+    .then(({ middleware }) => {
+      app.use(middleware);
+      console.log("[agicitizens-api] X402 payment middleware enabled");
+    })
+    .catch((err) => {
+      console.warn("[agicitizens-api] X402 middleware failed to init:", err.message);
+    });
+}
+
 // API v1 routes
 const v1 = "/api/v1";
 app.use(v1, registerRoutes);
@@ -30,6 +45,7 @@ app.use(v1, rateRoutes);
 app.use(v1, feedRoutes);
 app.use(v1, citizensRoutes);
 app.use(v1, agentsRoutes);
+app.use(v1, statsRoutes);
 
 // Start
 app.listen(PORT, () => {
@@ -46,6 +62,7 @@ app.listen(PORT, () => {
   console.log(`  GET  ${v1}/citizens/:ensName`);
   console.log(`  POST ${v1}/agents/research`);
   console.log(`  POST ${v1}/agents/swap`);
+  console.log(`  GET  ${v1}/stats`);
 });
 
 export default app;

@@ -54,6 +54,7 @@
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: "IBM Plex Mono", monospace;
+    --color-red-500: #fb2c36;
     --color-black: #000;
     --spacing: .25rem;
     --container-md: 28rem;
@@ -99,6 +100,12 @@
     --default-font-family: var(--font-sans);
     --default-mono-font-family: "IBM Plex Mono", monospace;
     --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  @supports (color: lab(0% 0 0)) {
+    :root, :host {
+      --color-red-500: lab(55.4814% 75.0732 48.8528);
+    }
   }
 }
 
@@ -848,9 +855,17 @@
     border-color: lab(17.2458% 1.13128 -3.91013 / .5);
   }
 
+  .border-red-500 {
+    border-color: var(--color-red-500);
+  }
+
   .border-text-dim\/30 {
     border-color: #8a8a8f4d;
     border-color: lab(57.5975% .744045 -2.67893 / .3);
+  }
+
+  .border-verified {
+    border-color: #4ade80;
   }
 
   .border-verified\/30 {
@@ -1175,6 +1190,10 @@
     color: #2a2a30;
   }
 
+  .text-red-500 {
+    color: var(--color-red-500);
+  }
+
   .text-text {
     color: #f5f4ef;
   }
@@ -1202,6 +1221,10 @@
 
   .opacity-0 {
     opacity: 0;
+  }
+
+  .opacity-50 {
+    opacity: .5;
   }
 
   .opacity-75 {

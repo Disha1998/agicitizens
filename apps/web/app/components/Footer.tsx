@@ -7,26 +7,14 @@ const footerLinks = [
     heading: "Product",
     links: [
       { label: "Directory", href: "#directory" },
-      { label: "Registry", href: "#registry" },
-      { label: "citizen.md", href: "#docs" },
-      { label: "API Docs", href: "#docs" },
+      { label: "Live Feed", href: "#feed" },
+      { label: "How It Works", href: "#how-it-works" },
     ],
   },
   {
     heading: "Community",
     links: [
-      { label: "Discord", href: "#" },
-      { label: "Twitter / X", href: "#" },
-      { label: "GitHub", href: "#" },
-      { label: "Forum", href: "#" },
-    ],
-  },
-  {
-    heading: "Legal",
-    links: [
-      { label: "Terms", href: "#" },
-      { label: "Privacy", href: "#" },
-      { label: "Governance", href: "#" },
+      { label: "GitHub", href: "https://github.com/AGICitizens" },
     ],
   },
 ];
@@ -41,7 +29,7 @@ export default function Footer() {
       className="border-t border-border px-6 py-16"
     >
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3">
@@ -69,6 +57,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
+                      {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       className="font-mono text-xs text-text-dim transition-colors hover:text-accent"
                     >
                       {link.label}
@@ -83,7 +72,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="font-mono text-xs text-text-dim">
-            &copy; 2026 AGI Citizens. All rights reserved.
+            &copy; 2025 AGI Citizens. All rights reserved.
           </p>
           <p className="font-mono text-xs text-text-dim">
             Built on Base · Powered by ENS · Payments via X402

@@ -1,4 +1,10 @@
-import { createWalletClient, createPublicClient, http, type Hex, type Address } from "viem";
+import {
+  createWalletClient,
+  createPublicClient,
+  http,
+  type Hex,
+  type Address,
+} from "viem";
 import { base, baseSepolia } from "viem/chains";
 import { addEnsContracts } from "@ensdomains/ensjs";
 import { createSubname } from "@ensdomains/ensjs/wallet";
@@ -21,7 +27,8 @@ import { getNetwork } from "@agicitizens/shared";
  */
 
 const network = getNetwork();
-const chain = network.id === "base" ? addEnsContracts(base) : addEnsContracts(baseSepolia);
+const chain =
+  network.id === "base" ? addEnsContracts(base) : addEnsContracts(baseSepolia);
 
 function getWalletClient() {
   const privateKey = process.env.ENS_OWNER_PRIVATE_KEY as Hex | undefined;
@@ -46,7 +53,7 @@ function getPublicClient() {
  */
 export async function registerSubdomain(
   name: string,
-  ownerAddress: string,
+  ownerAddress: string
 ): Promise<{ ensName: string; txHash: string }> {
   const ensName = `${name}.${network.identityDomain}`;
 
@@ -78,14 +85,16 @@ export async function registerSubdomain(
  */
 export async function setTextRecords(
   ensName: string,
-  records: Record<string, string>,
+  records: Record<string, string>
 ): Promise<string> {
   if (!process.env.ENS_OWNER_PRIVATE_KEY) {
     console.warn("[ens] ENS_OWNER_PRIVATE_KEY not set — using mock");
     return mockSetText(ensName, records);
   }
 
-  const resolverAddress = process.env.ENS_RESOLVER_ADDRESS as Address | undefined;
+  const resolverAddress = process.env.ENS_RESOLVER_ADDRESS as
+    | Address
+    | undefined;
   if (!resolverAddress) {
     throw new Error("ENS_RESOLVER_ADDRESS is required for text records");
   }
@@ -118,7 +127,7 @@ export async function setTextRecords(
  */
 export async function getTextRecord(
   ensName: string,
-  key: string,
+  key: string
 ): Promise<string | null> {
   try {
     const client = getPublicClient();

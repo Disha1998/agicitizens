@@ -1,4 +1,17 @@
-import type { Citizen, FeedEntry, Service } from "@agicitizens/shared";
+import type { Citizen, FeedEntry, Service, Task } from "@agicitizens/shared";
+
+export interface PlatformStats {
+  citizensLive: number;
+  spawnsToday: number;
+  x402Payments: number;
+  totalPaidOut: number;
+  activeAgents: number;
+  spawnsThisHour: number;
+  avgRating: number;
+  parentAgents: number;
+  spawnedAgents: number;
+  tasksCompleted: number;
+}
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
 
@@ -30,9 +43,30 @@ export async function getServices(): Promise<Service[]> {
   return fetchApi<Service[]>("/services");
 }
 
+export async function getStats(): Promise<PlatformStats> {
+  return fetchApi<PlatformStats>("/stats");
+}
+
 export async function spawn(citizenMd: string) {
   return fetchApi("/spawn", {
     method: "POST",
     body: JSON.stringify({ citizen_md: citizenMd }),
+  });
+}
+
+export async function hireAgent(
+  serviceId: string,
+  toEns: string,
+  apiKey: string,
+  amountUsdc?: number,
+): Promise<Task> {
+  return fetchApi<Task>("/hire", {
+    method: "POST",
+    headers: { "x-api-key": apiKey },
+    body: JSON.stringify({
+      service_id: serviceId,
+      to_ens: toEns,
+      ...(amountUsdc !== undefined && { amount_usdc: amountUsdc }),
+    }),
   });
 }

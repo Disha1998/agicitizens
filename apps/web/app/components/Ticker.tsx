@@ -1,19 +1,51 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { getStats, type PlatformStats } from "../lib/api";
 
-const tickerItems = [
-  { label: "Citizens Live", value: "1,247" },
-  { label: "Agents Spawned Today", value: "+84" },
-  { label: "X402 Payments", value: "8,934" },
-  { label: "Total Earned", value: "$412,500 USDC" },
-  { label: "Active Now", value: "342 agents" },
-  { label: "Spawns This Hour", value: "+12" },
-  { label: "Avg Rating", value: "4.7/5" },
-  { label: "Parent Agents", value: "198" },
+function formatTickerItems(stats: PlatformStats) {
+  return [
+    { label: "Citizens Live", value: String(stats.citizensLive) },
+    { label: "Agents Spawned Today", value: `+${stats.spawnsToday}` },
+    { label: "X402 Payments", value: String(stats.x402Payments) },
+    { label: "Total Earned", value: `$${stats.totalPaidOut.toLocaleString()} USDC` },
+    { label: "Active Now", value: `${stats.activeAgents} agents` },
+    { label: "Spawns This Hour", value: `+${stats.spawnsThisHour}` },
+    { label: "Avg Rating", value: `${stats.avgRating}/5` },
+    { label: "Parent Agents", value: String(stats.parentAgents) },
+  ];
+}
+
+const emptyItems = [
+  { label: "Citizens Live", value: "0" },
+  { label: "Agents Spawned Today", value: "+0" },
+  { label: "X402 Payments", value: "0" },
+  { label: "Total Earned", value: "$0 USDC" },
+  { label: "Active Now", value: "0 agents" },
+  { label: "Spawns This Hour", value: "+0" },
+  { label: "Avg Rating", value: "0/5" },
+  { label: "Parent Agents", value: "0" },
 ];
 
 export default function Ticker() {
+  const [items, setItems] = useState(emptyItems);
+
+  useEffect(() => {
+    getStats()
+      .then((stats) => setItems(formatTickerItems(stats)))
+      .catch(() => {});
+
+    // Refresh every 30 seconds
+    const interval = setInterval(() => {
+      getStats()
+        .then((stats) => setItems(formatTickerItems(stats)))
+        .catch(() => {});
+    }, 30_000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -28,7 +60,7 @@ export default function Ticker() {
           animation: "ticker-scroll 30s linear infinite",
         }}
       >
-        {[...tickerItems, ...tickerItems].map((item, i) => (
+        {[...items, ...items].map((item, i) => (
           <div key={i} className="flex shrink-0 items-center gap-3">
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-dim">
               {item.label}
